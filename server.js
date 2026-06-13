@@ -198,7 +198,7 @@ function zCls(z){return 's-'+WX_CLR[ZHI_WX[z]||''];}
 function ssCls(g){return 'ss-'+WX_CLR[GAN_WX[g]||''];}
 function dotCls(g){return WX_CLR[GAN_WX[g]||'']?WX_CLR[GAN_WX[g]]:'wood';}
 
-function buildAnalysisHtml(riGan,riZhi,pillars,wxCount,dayun,gender,beijingTime,trueSolar,solarOffset,birthplace){
+function buildAnalysisHtml(riGan,riZhi,pillars,wxCount,dayun,gender,beijingTime,trueSolar,solarOffset,birthplace,birthYear){
   var g=gender===1?'男':'女',h='',bz=pillars.map(p=>p.ganZhi).join(' ');
   h+='<p class="subtitle">'+bz+' · '+g+'命 · '+riGan+'日主<br>'+beijingTime+' · '+trueSolar+' 真太阳时 ('+(solarOffset>0?'+':'')+solarOffset+'分)<br>'+birthplace+'</p>';
 
