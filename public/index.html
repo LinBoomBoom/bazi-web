@@ -102,17 +102,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <script>
 // ===== 从服务端加载完整省市数据 =====
 let REG=[],_curLng=116.4;
-async function initRegion(){
-  try{
-    const resp=await fetch('/regions.json');
-    const data=await resp.json();
-    REG=Object.entries(data).map(([k,v])=>[k.replace(/省$/,'').replace(/市$/,'').replace(/自治区$/,'').replace(/特别行政区$/,'').replace(/壮族$/,'').replace(/回族$/,'').replace(/维吾尔$/,''),v]);
+function initRegion(){
+  fetch('/regions.json').then(r=>r.json()).then(data=>{
+    REG=Object.entries(data).map(([k,v])=>[k,v]);
+    if(!REG.length)throw new Error('empty');
     renderProv();
-  }catch(e){
-    // 回退：用精简嵌入数据
-    REG=[["广东",[["广州",113.3,["越秀","天河","海珠","白云"]]]]];
+  }).catch(e=>{
+    console.warn('regions fetch failed, using fallback:',e.message);
+    REG=[["广东",[{n:"广州",lng:113.3,d:["越秀","天河","海珠","白云","番禺","黄埔"]},{n:"深圳",lng:114.1,d:["福田","南山","罗湖","宝安","龙岗"]},{n:"珠海",lng:113.6,d:["香洲","斗门"]},{n:"佛山",lng:113.1,d:["禅城","南海","顺德"]},{n:"东莞",lng:113.8,d:[]},{n:"中山",lng:113.4,d:[]},{n:"惠州",lng:114.4,d:["惠城","惠阳"]},{n:"汕头",lng:116.7,d:["金平","龙湖"]},{n:"湛江",lng:110.4,d:["赤坎","霞山"]},{n:"茂名",lng:110.9,d:["茂南"]},{n:"韶关",lng:113.6,d:["浈江","武江"]},{n:"江门",lng:113.1,d:["蓬江","江海"]},{n:"肇庆",lng:112.5,d:["端州","鼎湖"]},{n:"梅州",lng:116.1,d:["梅江"]},{n:"清远",lng:113.0,d:["清城"]},{n:"揭阳",lng:116.4,d:["榕城"]},{n:"潮州",lng:116.6,d:["湘桥"]},{n:"河源",lng:114.7,d:["源城"]}]]];
     renderProv();
-  }
+  });
 }
 function renderProv(){
   let o='';for(const p of REG)o+=`<option>${p[0]}</option>`;
