@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>八字 · 在线排盘分析</title>
+<style>
+:root{--bg:#060a10;--card2:#111827;--border:#1a2740;--border2:#243550;--gold:#c8a96e;--gold2:#a08048;--gold3:#e0cba0;--text:#c8d0d8;--dim:#687080;--dim2:#485060;--green:#5cb888;--red:#e06060;--warn:#d4a840;--font:'PingFang SC','Microsoft YaHei',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;line-height:1.7}
+.container{max-width:680px;margin:0 auto;padding:0 16px 40px}
+.hd{text-align:center;padding:40px 0 24px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.hd h1{font-size:26px;color:var(--gold);letter-spacing:3px;font-weight:700}
+.hd .sub{font-size:12px;color:var(--dim);margin-top:6px;letter-spacing:2px}
+.ld{text-align:center;padding:48px 0;display:none}
+.ld.on{display:block}
+.spin{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ld-text{color:var(--dim);font-size:13px;letter-spacing:1px}
+#result{display:none}
+#result.on{display:block}
+
+.tcard{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:28px 24px 20px;margin-bottom:20px}
+.tclabel{font-size:11px;color:var(--dim2);letter-spacing:2px;text-align:center;margin-bottom:20px}
+.sel-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:flex-end;padding-top:8px}
+.sel-row .sg{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sel-row .sg label{font-size:9px;color:var(--dim2);letter-spacing:1px}
+.sel-row .sg select{background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:8px 6px;font-size:13px;outline:none;text-align:center;appearance:none;cursor:pointer;min-width:58px;transition:border-color .2s,box-shadow .2s;font-family:var(--font)}
+.sel-row .sg select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(200,169,110,.15)}
+.sel-row .sg select:hover{border-color:var(--dim)}
+.btn{background:linear-gradient(135deg,#c8a96e,#9a7840);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:13px;cursor:pointer;letter-spacing:1px;font-weight:600;height:42px;transition:all .25s ease}
+.btn:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,169,110,.25)}
+.btn-go{display:block;width:240px;margin:14px auto 0;height:48px;font-size:15px;letter-spacing:3px;border-radius:12px}
+.btn-ghost{background:transparent;border:1px solid var(--gold2);color:var(--gold);padding:8px 16px;font-size:12px;cursor:pointer;letter-spacing:1px;border-radius:20px;height:36px;transition:all .25s ease}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold3);background:rgba(200,169,110,.08);transform:translateY(-1px)}
+.btn-ghost.on{background:rgba(200,169,110,.15);border-color:var(--gold);color:var(--gold3)}
+
+.qwrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border);margin-top:14px}
+.qwrap input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--border2);border-radius:10px;color:var(--text);padding:10px 16px;font-size:13px;outline:none;letter-spacing:.5px;transition:border-color .25s,box-shadow .25s;font-family:var(--font)}
+.qwrap input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(200,169,110,.12)}
+.qwrap input::placeholder{color:var(--dim2)}
+.qcat{display:flex;gap:5px;flex-wrap:wrap}
+.qcat .qc{background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.1);color:var(--dim);border-radius:14px;padding:5px 14px;font-size:11px;cursor:pointer;transition:all .2s ease;letter-spacing:.5px;white-space:nowrap;user-select:none}
+.qcat .qc:hover{border-color:var(--gold2);color:var(--gold3);background:rgba(200,169,110,.1);transform:translateY(-1px)}
+.qcat .qc.on{background:rgba(200,169,110,.15);border-color:var(--gold2);color:var(--gold);font-weight:500}
+
+.ibar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.it{background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.15);border-radius:6px;padding:5px 12px;font-size:12px;color:var(--gold3)}
+.it b{color:var(--gold);font-weight:600}
+
+.an-card{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:16px}
+.an-card .an-title{font-size:16px;color:var(--gold);margin-bottom:22px;letter-spacing:2px;font-weight:600;text-align:center;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.an-p{font-size:14px;line-height:2;color:var(--text)}
+.an-p em{color:var(--gold3);font-style:normal;font-weight:500}
+.an-summary{background:var(--bg);border:1px solid var(--border2);border-radius:12px;padding:16px;margin-top:24px;text-align:center}
+.an-summary .as-sub{font-size:11px;color:var(--dim)}
+
+@media(max-width:480px){
+  .hd h1{font-size:22px}
+  .an-card{padding:20px 16px}
+  .btn-go{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="hd"><h1>🔮 八字 · 在线排盘</h1><p class="sub">输入生辰 · AI 命理分析</p></div>
+
+<div class="tcard">
+  <div class="tclabel">▼ 出 生 时 间</div>
+  <div class="sel-row">
+    <div class="sg"><label>年</label><select id="sy"></select></div>
+    <div class="sg"><label>月</label><select id="sm"></select></div>
+    <div class="sg"><label>日</label><select id="sd"></select></div>
+    <div class="sg"><label>时</label><select id="sh"></select></div>
+    <div class="sg"><label>分</label><select id="smi"></select></div>
+    <button class="btn-ghost on" id="bm" onclick="setGender(1)" style="height:40px">男</button>
+    <button class="btn-ghost" id="bf" onclick="setGender(0)" style="height:40px">女</button>
+  </div>
+  <div class="qwrap">
+    <input id="sq" type="text" placeholder="输入求测问题，如：问事业前程 / 问婚姻感情 / 问财运投资…" onkeydown="if(event.key==='Enter')go()">
+    <div class="qcat">
+      <span class="qc" onclick="pickQ('事业')">💼 事业</span>
+      <span class="qc" onclick="pickQ('财运')">💰 财运</span>
+      <span class="qc" onclick="pickQ('感情')">💕 感情</span>
+      <span class="qc" onclick="pickQ('健康')">🏥 健康</span>
+      <span class="qc" onclick="pickQ('学业')">📚 学业</span>
+      <span class="qc" onclick="pickQ('其它')">📋 其它</span>
+    </div>
+  </div>
+  <button class="btn btn-go" onclick="go()">🔮 开 始 分 析</button>
+</div>
+
+<div class="ld" id="ld"><div class="spin"></div><div class="ld-text">八字排盘中…</div></div>
+<div id="result"></div>
+</div>
+
+<script>
+let _gender=1;
+const WD=['日','一','二','三','四','五','六'];
+
+function $(id){return document.getElementById(id);}
+
+function setGender(g){
+  _gender=g;
+  if(g===1){$('bm').classList.add('on');$('bf').classList.remove('on');}
+  else{$('bf').classList.add('on');$('bm').classList.remove('on');}
+}
+
+function initSelects(){
+  const n=new Date(),cy=n.getFullYear();
+  let o='';for(let i=cy-80;i<=cy;i++)o+=`<option value="${i}"${i===cy-30?' selected':''}>${i}</option>`;
+  $('sy').innerHTML=o;
+  o='';for(let i=1;i<=12;i++)o+=`<option value="${i}"${i===6?' selected':''}>${i}</option>`;
+  $('sm').innerHTML=o;
+  o='';for(let i=1;i<=31;i++)o+=`<option value="${i}"${i===15?' selected':''}>${i}</option>`;
+  $('sd').innerHTML=o;
+  o='';for(let i=0;i<=23;i++)o+=`<option value="${i}"${i===8?' selected':''}>${String(i).padStart(2,'0')}</option>`;
+  $('sh').innerHTML=o;
+  o='';for(let i=0;i<=59;i++)o+=`<option value="${i}">${String(i).padStart(2,'0')}</option>`;
+  $('smi').innerHTML=o;
+}
+
+function pickQ(tag){
+  const inp=$('sq'),cur=inp.value.trim();
+  const chips=$('qcat').querySelectorAll('.qc');
+  chips.forEach(c=>{c.classList.toggle('on',c.textContent.includes(tag));});
+  const prefixes={事业:'问事业前程：',财运:'问财运投资：',感情:'问感情姻缘：',健康:'问身体健康：',学业:'问学业考试：',其它:'问：'};
+  const bare=cur.replace(/^问[^：:]*[：:]/,'').trim();
+  inp.value=(prefixes[tag]||'')+(bare||'');
+  inp.focus();
+}
+
+async function go(){
+  const y=+$('sy').value,m=+$('sm').value,d=+$('sd').value,h=+$('sh').value,mi=+$('smi').value;
+  const question=$('sq').value.trim();
+  if(!y||!m||!d){return}
+  $('ld').classList.add('on');$('result').classList.remove('on');window.scrollTo({top:0,behavior:'smooth'});
+  try{
+    const [resp,aiResp]=await Promise.all([
+      fetch('/api/bazi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,gender:_gender})}),
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,gender:_gender,question})})
+    ]);
+    const r=await resp.json();if(r.error){alert(r.error);return}
+    const ai=await aiResp.json().catch(()=>({fallback:true}));
+    render(r,ai,question);
+  }catch(e){alert('请求失败: '+e.message)}
+  finally{$('ld').classList.remove('on')}
+}
+
+function render(r,ai,question){
+  let h='';
+  // 信息条
+  h+='<div class="ibar">';
+  h+=`<span class="it">${r.gender}命 · <b>${r.bazi}</b></span>`;
+  h+=`<span class="it">日主 <b>${r.riGan}</b></span>`;
+  h+=`<span class="it">五行 <b>${Object.entries(r.wuxingCount).map(([k,v])=>k+v).join(' ')}</b></span>`;
+  if(r.dayun.length)h+=`<span class="it">大运 <b>${r.dayun[0]?.ganZhi||'?'}</b></span>`;
+  h+='</div>';
+
+  // AI 分析
+  const useAI=ai&&!ai.fallback&&ai.content;
+  h+=`<div class="an-card"><div class="an-title">📋 命理分析报告</div>`;
+
+  if(useAI){
+    const aiHtml=ai.content.replace(/\*\*(.+?)\*\*/g,'<em>$1</em>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    h+=`<div class="an-p">${aiHtml}</div>`;
+    h+=`<div class="an-summary"><div class="as-sub">DeepSeek AI · 八字命理分析 | 仅供参考</div></div>`;
+  }else{
+    h+=`<div class="an-p" style="color:var(--dim)">分析服务暂时不可用（${ai?.reason||'未知'}），请稍后重试。</div>`;
+  }
+  h+='</div>';
+
+  $('result').innerHTML=h;$('result').classList.add('on');
+  $('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+initSelects();
+</script>
+</body>
+</html>

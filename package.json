@@ -1,0 +1,13 @@
+{
+  "name": "bazi-web",
+  "version": "1.0.0",
+  "description": "八字在线排盘分析",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "lunar-typescript": "^1.6.0"
+  }
+}
