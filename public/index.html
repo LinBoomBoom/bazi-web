@@ -12,53 +12,53 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .hd{text-align:center;padding:36px 0 20px;border-bottom:1px solid var(--border);margin-bottom:24px}
 .hd h1{font-size:26px;color:var(--gold);letter-spacing:3px;font-weight:700}
 .hd .sub{font-size:12px;color:var(--dim);margin-top:4px;letter-spacing:2px}
-
-/* Loading */
-.ld{text-align:center;padding:48px 0;display:none}
-.ld.on{display:block}
+.ld{text-align:center;padding:48px 0;display:none}.ld.on{display:block}
 .spin{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 12px}
 @keyframes sp{to{transform:rotate(360deg)}}
-#result{display:none}
-#result.on{display:block}
+#result{display:none}#result.on{display:block}
 
-/* ===== 输入卡片 ===== */
+/* Input */
 .icard{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
-.icard .icl{font-size:11px;color:var(--dim2);letter-spacing:2px;text-align:center;margin-bottom:18px}
-.sel-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:flex-end}
-.sel-row .sg{display:flex;flex-direction:column;align-items:center;gap:4px}
-.sel-row .sg label{font-size:9px;color:var(--dim2);letter-spacing:1px}
-.sel-row .sg select{background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:8px 6px;font-size:13px;outline:none;text-align:center;appearance:none;cursor:pointer;min-width:56px;transition:.2s;font-family:var(--font)}
-.sel-row .sg select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(200,169,110,.15)}
+.icl{font-size:11px;color:var(--dim2);letter-spacing:2px;text-align:center;margin-bottom:18px}
+.sel-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:flex-end;margin-bottom:12px}
+.sg{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sg label{font-size:9px;color:var(--dim2);letter-spacing:1px}
+.sg select{background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:8px 6px;font-size:13px;outline:none;text-align:center;appearance:none;cursor:pointer;min-width:56px;transition:.2s;font-family:var(--font)}
+.sg select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(200,169,110,.15)}
 .btn{background:linear-gradient(135deg,#c8a96e,#9a7840);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:13px;cursor:pointer;letter-spacing:1px;font-weight:600;height:42px;transition:all .25s ease}
 .btn:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,169,110,.25)}
-.btn-pai{display:block;width:220px;margin:18px auto 0;height:48px;font-size:15px;letter-spacing:3px;border-radius:12px}
+.btn-pai{display:block;width:240px;margin:16px auto 0;height:48px;font-size:15px;letter-spacing:3px;border-radius:12px}
 .btn-ghost{background:transparent;border:1px solid var(--gold2);color:var(--gold);padding:8px 16px;font-size:12px;cursor:pointer;letter-spacing:1px;border-radius:20px;height:36px;transition:all .25s ease}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold3);background:rgba(200,169,110,.08)}
 .btn-ghost.on{background:rgba(200,169,110,.15);border-color:var(--gold);color:var(--gold3)}
 
-/* ===== 排盘表 ===== */
+/* 结果 */
 .bazi-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
-.bazi-card .sect{font-size:13px;color:var(--gold);margin-bottom:16px;letter-spacing:2px;font-weight:600;display:flex;align-items:center;gap:8px}
-.bazi-card .sect::before{content:'';width:3px;height:14px;background:var(--gold);border-radius:1.5px}
+.sect{font-size:13px;color:var(--gold);margin-bottom:16px;letter-spacing:2px;font-weight:600;display:flex;align-items:center;gap:8px}
+.sect::before{content:'';width:3px;height:14px;background:var(--gold);border-radius:1.5px}
+.info-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.info-tag{background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.12);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--gold3)}
+.info-tag b{color:var(--gold);font-weight:600}
+
+/* 排盘表 */
 .bz-table{width:100%;border-collapse:collapse;table-layout:fixed}
 .bz-table th,.bz-table td{text-align:center;padding:10px 4px;border:1px solid var(--border2);font-size:13px;vertical-align:middle}
 .bz-table th{background:rgba(200,169,110,.05);color:var(--dim);font-size:10px;font-weight:500;letter-spacing:1px}
 .bz-table .gz{font-size:22px;color:var(--gold);font-weight:700;letter-spacing:2px}
-.bz-table .gs{font-size:11px;color:var(--dim)}
 .bz-table .ny{font-size:10px;color:var(--dim2)}
 .bz-table .cg{font-size:10px;color:var(--purple)}
 .bz-table .ssz{font-size:10px;color:var(--blue)}
 .bz-table .rc{background:rgba(200,169,110,.03)}
 
-/* ===== 五行条 ===== */
-.wx-bar{display:flex;gap:4px;margin-bottom:14px}
+/* 五行条 */
+.wx-bar{display:flex;gap:4px}
 .wx-item{flex:1;text-align:center}
 .wx-item .wn{font-size:10px;color:var(--dim2);margin-bottom:2px}
 .wx-item .wb{height:6px;background:var(--border2);border-radius:3px;overflow:hidden}
 .wx-item .wf{height:100%;border-radius:3px;transition:width .5s ease}
 .wf.wood{background:var(--wood)}.wf.fire{background:var(--fire)}.wf.earth{background:var(--earth)}.wf.metal{background:var(--metal)}.wf.water{background:var(--water)}
 
-/* ===== 大运 ===== */
+/* 大运 */
 .dy-track{display:flex;gap:4px;flex-wrap:wrap}
 .dy-block{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 8px;text-align:center;min-width:60px;flex:1}
 .dy-block.cur{border-color:rgba(200,169,110,.45);background:rgba(200,169,110,.04)}
@@ -66,34 +66,34 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .dy-block .dy-age{font-size:9px;color:var(--dim);margin-top:2px}
 .dy-block .dy-tag{font-size:8px;color:var(--gold);background:rgba(200,169,110,.12);padding:1px 6px;border-radius:6px}
 
-/* ===== 分析报告 ===== */
+/* 分析 */
 .an-card{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:16px}
 .an-card .an-title{font-size:16px;color:var(--gold);margin-bottom:22px;letter-spacing:2px;font-weight:600;text-align:center;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .an-p{font-size:14px;line-height:2;color:var(--text)}
 .an-p em{color:var(--gold3);font-style:normal;font-weight:500}
-.an-summary{background:var(--bg);border:1px solid var(--border2);border-radius:12px;padding:16px;margin-top:24px;text-align:center}
-.an-summary .as-sub{font-size:11px;color:var(--dim)}
+.an-summary{background:var(--bg);border:1px solid var(--border2);border-radius:12px;padding:16px;margin-top:24px;text-align:center;font-size:11px;color:var(--dim)}
 
 @media(max-width:480px){
-  .hd h1{font-size:22px}
-  .bz-table .gz{font-size:18px}
-  .an-card{padding:20px 16px}
-  .btn-pai{width:100%}
+  .hd h1{font-size:22px}.bz-table .gz{font-size:18px}.an-card{padding:20px 16px}.btn-pai{width:100%}
 }
 </style>
 </head>
 <body>
 <div class="container">
-<div class="hd"><h1>🔮 八字 · 在线排盘</h1><p class="sub">子平法 · 格局用神 · AI 命理分析</p></div>
+<div class="hd"><h1>🔮 八字 · 在线排盘</h1><p class="sub">真太阳时 · 子平格局 · 用神喜忌 · AI 命理分析</p></div>
 
 <div class="icard">
-  <div class="icl">▼ 出 生 时 间</div>
+  <div class="icl">▼ 出 生 时 间 & 地 点</div>
   <div class="sel-row">
     <div class="sg"><label>年</label><select id="sy"></select></div>
     <div class="sg"><label>月</label><select id="sm"></select></div>
     <div class="sg"><label>日</label><select id="sd"></select></div>
     <div class="sg"><label>时</label><select id="sh"></select></div>
     <div class="sg"><label>分</label><select id="smi"></select></div>
+  </div>
+  <div class="sel-row">
+    <div class="sg"><label>出生地</label><select id="sc" style="min-width:120px"><option value="">加载中…</option></select></div>
+    <div class="sg"><label>经度</label><select id="slng" style="min-width:70px"></select></div>
     <button class="btn-ghost on" id="bm" onclick="setGender(1)" style="height:40px">男</button>
     <button class="btn-ghost" id="bf" onclick="setGender(0)" style="height:40px">女</button>
   </div>
@@ -103,14 +103,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <div class="ld" id="ld"><div class="spin"></div><div style="color:var(--dim);font-size:13px">八字排盘中…</div></div>
 <div id="result"></div>
 </div>
-
 <script>
-let _gender=1;
+let _gender=1,_cities=[];
 const WD=['日','一','二','三','四','五','六'];
 
 function $(id){return document.getElementById(id);}
-
 function setGender(g){_gender=g;$('bm').classList.toggle('on',g===1);$('bf').classList.toggle('on',g===0);}
+
+async function loadCities(){
+  try{const r=await fetch('/api/cities');_cities=await r.json();renderCitySelect();}catch(e){$('sc').innerHTML='<option>北京</option>';}
+}
+function renderCitySelect(){
+  let o='';for(const c of _cities)o+=`<option value="${c.lng}"${c.name==='北京'?' selected':''}>${c.name}</option>`;
+  $('sc').innerHTML=o;updateLngDisplay();
+}
+function updateLngDisplay(){
+  const lng=parseFloat($('sc').value)||120;
+  $('slng').innerHTML=`<option>${lng}°E</option>${[115,116,117,118,119,120,121].map(v=>`<option value="${v}"${Math.abs(v-lng)<0.1?' selected':''}>${v}°E</option>`).join('')}`;
+  $('slng').onchange=function(){const v=parseFloat(this.value);if(v){$('sc').value=v;renderCitySelect();}};
+}
 
 function initSelects(){
   const n=new Date(),cy=n.getFullYear();
@@ -128,12 +139,13 @@ function initSelects(){
 
 async function go(){
   const y=+$('sy').value,m=+$('sm').value,d=+$('sd').value,h=+$('sh').value,mi=+$('smi').value;
+  const lng=parseFloat($('slng').querySelector('option:checked')?.value||$('sc').value)||120;
   if(!y||!m||!d)return;
   $('ld').classList.add('on');$('result').classList.remove('on');window.scrollTo({top:0,behavior:'smooth'});
   try{
     const [resp,aiResp]=await Promise.all([
-      fetch('/api/bazi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,gender:_gender})}),
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,gender:_gender})})
+      fetch('/api/bazi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:lng,gender:_gender})}),
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:lng,gender:_gender})})
     ]);
     const r=await resp.json();if(r.error){alert(r.error);return}
     const ai=await aiResp.json().catch(()=>({fallback:true}));
@@ -145,51 +157,50 @@ async function go(){
 function render(r,ai){
   let h='';
 
-  // === 八字排盘表 ===
+  // 基本信息
+  h+='<div class="bazi-card"><div class="sect">基 本 信 息</div>';
+  h+='<div class="info-row">';
+  h+=`<span class="info-tag">${r.gender}命 · 日主 <b>${r.riGan}</b></span>`;
+  h+=`<span class="info-tag">北京时间 <b>${r.beijingTime}</b></span>`;
+  h+=`<span class="info-tag">真太阳时 <b>${r.trueSolar}</b> (${r.solarOffset>0?'+':''}${r.solarOffset}分)</span>`;
+  h+=`<span class="info-tag">八字 <b>${r.bazi}</b></span>`;
+  h+='</div></div>';
+
+  // 四柱排盘
   h+='<div class="bazi-card"><div class="sect">四 柱 八 字</div>';
-  h+='<div style="text-align:center;margin-bottom:12px"><span style="color:var(--gold3);font-size:14px;letter-spacing:2px">'+r.gender+'命 · <b>'+r.bazi+'</b> · 日主<b> '+r.riGan+'</b></span></div>';
-  h+='<table class="bz-table"><thead><tr>';
-  for(const p of r.pillars)h+=`<th>${p.name}</th>`;
-  h+='</tr></thead><tbody>';
-  // 天干行
-  h+='<tr>'+r.pillars.map(p=>`<td class="rc"><div class="gz">${p.gan}</div><div class="gs">${p.shiShen}</div></td>`).join('')+'</tr>';
-  // 地支行
+  h+='<table class="bz-table"><thead><tr>'+r.pillars.map(p=>`<th>${p.name}</th>`).join('')+'</tr></thead><tbody>';
+  h+='<tr>'+r.pillars.map(p=>`<td class="rc"><div class="gz">${p.gan}</div><div style="font-size:11px;color:var(--dim)">${p.shiShen}</div></td>`).join('')+'</tr>';
   h+='<tr>'+r.pillars.map(p=>`<td class="rc"><div class="gz">${p.zhi}</div><div class="ssz">${p.shiShenZhi}</div></td>`).join('')+'</tr>';
-  // 藏干
   h+='<tr>'+r.pillars.map(p=>`<td><div class="cg">${(p.cangGan||[]).join(' ')}</div></td>`).join('')+'</tr>';
-  // 纳音
   h+='<tr>'+r.pillars.map(p=>`<td><div class="ny">${p.naYin}</div></td>`).join('')+'</tr>';
   h+='</tbody></table></div>';
 
-  // === 五行分布 ===
-  h+='<div class="bazi-card"><div class="sect">五 行 分 布</div>';
-  h+='<div class="wx-bar">';
-  const wxNames=['木','火','土','金','水'],wxCls=['wood','fire','earth','metal','water'];
+  // 五行分布
+  const wxN=['木','火','土','金','水'],wxC=['wood','fire','earth','metal','water'];
   const total=Math.max(1,Object.values(r.wuxingCount).reduce((a,b)=>a+b,0));
+  h+='<div class="bazi-card"><div class="sect">五 行 分 布</div><div class="wx-bar">';
   for(let i=0;i<5;i++){
-    const cnt=r.wuxingCount[wxNames[i]]||0;
-    h+=`<div class="wx-item"><div class="wn">${wxNames[i]} ${cnt}</div><div class="wb"><div class="wf ${wxCls[i]}" style="width:${Math.round(cnt/total*100)}%"></div></div></div>`;
+    const cnt=r.wuxingCount[wxN[i]]||0;
+    h+=`<div class="wx-item"><div class="wn">${wxN[i]} ${cnt}</div><div class="wb"><div class="wf ${wxC[i]}" style="width:${Math.round(cnt/total*100)}%"></div></div></div>`;
   }
   h+='</div></div>';
 
-  // === 大运 ===
+  // 大运
   if(r.dayun.length&&!r.dayun[0].info){
-    h+='<div class="bazi-card"><div class="sect">大 运 流 程</div>';
-    h+='<div class="dy-track">';
+    h+='<div class="bazi-card"><div class="sect">大 运 流 程</div><div class="dy-track">';
     for(const dy of r.dayun){
-      const isCur=dy.startYear<=30&&dy.startYear+9>=30;
-      h+=`<div class="dy-block${isCur?' cur':''}"><div class="dy-gz">${dy.ganZhi}</div><div class="dy-age">${dy.ages||dy.startYear}岁</div>${isCur?'<div class="dy-tag">当前</div>':''}</div>`;
+      h+=`<div class="dy-block${dy.cur?' cur':''}"><div class="dy-gz">${dy.ganZhi}</div><div class="dy-age">${dy.ages||dy.startAge}岁</div>${dy.cur?'<div class="dy-tag">当前</div>':''}</div>`;
     }
     h+='</div></div>';
   }
 
-  // === AI 分析报告 ===
+  // AI分析
   const useAI=ai&&!ai.fallback&&ai.content;
   h+='<div class="an-card"><div class="an-title">📋 命 理 分 析 报 告</div>';
   if(useAI){
     const aiHtml=ai.content.replace(/\*\*(.+?)\*\*/g,'<em>$1</em>').replace(/###?\s*(.+)/g,'<div style="color:var(--gold3);font-weight:600;margin:16px 0 4px;font-size:14px">$1</div>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
     h+=`<div class="an-p">${aiHtml}</div>`;
-    h+=`<div class="an-summary"><div class="as-sub">DeepSeek AI · 八字命理分析 | 仅供参考</div></div>`;
+    h+=`<div class="an-summary">DeepSeek AI · 八字命理分析 | 仅供参考</div>`;
   }else{
     h+=`<div class="an-p" style="color:var(--dim)">分析服务暂不可用（${ai?.reason||'未知'}），请稍后重试。</div>`;
   }
@@ -199,7 +210,7 @@ function render(r,ai){
   $('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-initSelects();
+initSelects();loadCities();
 </script>
 </body>
 </html>
