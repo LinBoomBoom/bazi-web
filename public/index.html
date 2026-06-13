@@ -18,7 +18,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 #result{display:none}#result.on{display:block}
 
 .icard{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
-.icl{font-size:11px;color:var(--dim2);letter-spacing:2px;text-align:center;margin-bottom:16px}
+.sec-label{font-size:12px;color:var(--dim2);letter-spacing:1px;white-space:nowrap;flex-shrink:0}
 .sel-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:flex-end;margin-bottom:10px}
 .sel-row:last-child{margin-bottom:0}
 .sg{display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -80,14 +80,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <div class="hd"><h1>🔮 八字 · 在线排盘</h1><p class="sub">真太阳时 · 子平格局 · AI 命理分析</p></div>
 
 <div class="icard">
-  <div class="icl">▼ 出 生 地</div>
   <div class="sel-row">
-    <div class="sg"><label>省/直辖市</label><select id="sp" onchange="onProv()" style="min-width:100px"><option>加载中…</option></select></div>
-    <div class="sg"><label>市/区</label><select id="sc" onchange="onCity()" style="min-width:110px"><option>请先选省</option></select></div>
-    <div class="sg"><label>县/区</label><select id="sx" style="min-width:110px"><option>请先选市</option></select></div>
+    <span class="sec-label">出生地</span>
+    <div class="sg"><select id="sp" onchange="onProv()" style="min-width:100px"><option>加载中…</option></select></div>
+    <div class="sg"><select id="sc" onchange="onCity()" style="min-width:110px"><option>请先选省</option></select></div>
+    <div class="sg"><select id="sx" style="min-width:110px"><option>请先选市</option></select></div>
   </div>
-  <div class="icl">▼ 出 生 时 间</div>
-  <div class="sel-row" style="margin-bottom:10px">
+  <div class="sel-row">
+    <span class="sec-label">出生时间</span>
+    <div class="sg"><select id="sy"></select></div>
+    <div class="sg"><select id="sm"></select></div>
+    <div class="sg"><select id="sd"></select></div>
+    <div class="sg" style="flex-direction:row;gap:2px"><label style="font-size:9px;color:var(--dim2);padding-top:2px">时</label><select id="sh"></select></div>
+    <div class="sg" style="flex-direction:row;gap:2px"><label style="font-size:9px;color:var(--dim2);padding-top:2px">分</label><select id="smi"></select></div>
+  </div>
+  <div class="sel-row">
     <div class="gender-row">
       <button class="gr-btn on" id="bs" onclick="setCal(0)">阳历</button>
       <button class="gr-btn" id="bl" onclick="setCal(1)">农历</button>
@@ -96,13 +103,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
       <button class="gr-btn on" id="bm" onclick="setGender(1)">男</button>
       <button class="gr-btn" id="bf" onclick="setGender(0)">女</button>
     </div>
-  </div>
-  <div class="sel-row">
-    <div class="sg"><label>年</label><select id="sy"></select></div>
-    <div class="sg"><label>月</label><select id="sm"></select></div>
-    <div class="sg"><label>日</label><select id="sd"></select></div>
-    <div class="sg"><label>时</label><select id="sh"></select></div>
-    <div class="sg"><label>分</label><select id="smi"></select></div>
   </div>
   <button class="btn btn-pai" onclick="go()">🔮 开 始 排 盘</button>
 </div>
