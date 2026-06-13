@@ -16,7 +16,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .spin{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 12px}
 @keyframes sp{to{transform:rotate(360deg)}}
 #result{display:none}#result.on{display:block}
-
 .icard{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
 .sel-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:flex-end;margin-bottom:10px}
 .sel-row:last-child{margin-bottom:0}
@@ -25,15 +24,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .sg select,.sg input{background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:8px 6px;font-size:13px;outline:none;text-align:center;cursor:pointer;min-width:56px;transition:.2s;font-family:var(--font)}
 .sg select:focus,.sg input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(200,169,110,.15)}
 .sec-label{font-size:12px;color:var(--dim2);letter-spacing:1px;white-space:nowrap;flex-shrink:0}
-
 .btn{background:linear-gradient(135deg,#c8a96e,#9a7840);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:13px;cursor:pointer;letter-spacing:1px;font-weight:600;height:42px;transition:all .25s ease}
 .btn:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,169,110,.25)}
 .btn-pai{display:block;width:240px;margin:18px auto 0;height:48px;font-size:15px;letter-spacing:3px;border-radius:12px}
 .gender-row{display:inline-flex;background:var(--bg);border:1px solid var(--border2);border-radius:10px;overflow:hidden}
 .gender-row .gr-btn{background:transparent;border:none;color:var(--dim);padding:8px 20px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:all .2s;font-family:var(--font)}
 .gender-row .gr-btn.on{background:rgba(200,169,110,.15);color:var(--gold)}
-
-/* 结果样式 */
 .bazi-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
 .sect{font-size:13px;color:var(--gold);margin-bottom:16px;letter-spacing:2px;font-weight:600;display:flex;align-items:center;gap:8px}
 .sect::before{content:'';width:3px;height:14px;background:var(--gold);border-radius:1.5px}
@@ -66,166 +62,139 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <body>
 <div class="container">
 <div class="hd"><h1>八字 · 在线排盘</h1><p class="sub">真太阳时 · 子平格局 · AI 命理分析</p></div>
-
 <div class="icard">
-  <div class="sel-row">
-    <span class="sec-label">出生地</span>
-    <div class="sg"><label>省</label><select id="sp" onchange="onProv()" style="min-width:100px"><option>加载中…</option></select></div>
-    <div class="sg"><label>市</label><select id="sc" onchange="onCity()" style="min-width:110px"><option>请先选省</option></select></div>
-    <div class="sg"><label>区/县</label><select id="sx" style="min-width:110px"><option>请先选市</option></select></div>
-  </div>
-  <div class="sel-row">
-    <span class="sec-label">出生时间</span>
-    <div class="sg"><select id="sy"></select></div>
-    <div class="sg"><select id="sm"></select></div>
-    <div class="sg"><select id="sd"></select></div>
-    <div class="sg"><label>时</label><select id="sh"></select></div>
-    <div class="sg"><label>分</label><select id="smi"></select></div>
-  </div>
-  <div class="sel-row">
-    <div class="gender-row">
-      <button class="gr-btn on" id="bs" onclick="setCal(0)">阳历</button>
-      <button class="gr-btn" id="bl" onclick="setCal(1)">农历</button>
-    </div>
-    <div class="gender-row">
-      <button class="gr-btn on" id="bm" onclick="setGender(1)">男</button>
-      <button class="gr-btn" id="bf" onclick="setGender(0)">女</button>
-    </div>
-  </div>
-  <button class="btn btn-pai" onclick="go()">开始分析</button>
-  <div style="text-align:center;font-size:10px;color:var(--dim2);margin-top:8px">基于真太阳时排盘</div>
+<div class="sel-row"><span class="sec-label">出生地</span>
+<div class="sg"><label>省</label><select id="sp" onchange="onProv()"><option>加载中…</option></select></div>
+<div class="sg"><label>市</label><select id="sc" onchange="onCity()"><option>请先选省</option></select></div>
+<div class="sg"><label>区/县</label><select id="sx"><option>请先选市</option></select></div>
 </div>
-
+<div class="sel-row"><span class="sec-label">出生时间</span>
+<div class="sg"><select id="sy"></select></div>
+<div class="sg"><select id="sm"></select></div>
+<div class="sg"><select id="sd"></select></div>
+<div class="sg"><label>时</label><select id="sh"></select></div>
+<div class="sg"><label>分</label><select id="smi"></select></div>
+</div>
+<div class="sel-row">
+<div class="gender-row"><button class="gr-btn on" id="bs" onclick="setCal(0)">阳历</button><button class="gr-btn" id="bl" onclick="setCal(1)">农历</button></div>
+<div class="gender-row"><button class="gr-btn on" id="bm" onclick="setGender(1)">男</button><button class="gr-btn" id="bf" onclick="setGender(0)">女</button></div>
+</div>
+<button class="btn btn-pai" onclick="go()">开始分析</button>
+<div style="text-align:center;font-size:10px;color:var(--dim2);margin-top:8px">基于真太阳时排盘</div>
+</div>
 <div class="ld" id="ld"><div class="spin"></div><div style="color:var(--dim);font-size:13px">八字排盘中…</div></div>
 <div id="result"></div>
-</div>
 <script>
-// ===== 从服务端加载完整省市数据 =====
-let REG=[],_curLng=116.4;
-function initRegion(){
-  fetch('/regions.json').then(r=>r.json()).then(data=>{
-    REG=Object.entries(data).map(([k,v])=>[k,v]);
-    if(!REG.length)throw new Error('empty');
-    renderProv();
-  }).catch(e=>{
-    console.warn('regions fetch failed, using fallback:',e.message);
-    REG=[["广东",[{n:"广州",lng:113.3,d:["越秀","天河","海珠","白云","番禺","黄埔"]},{n:"深圳",lng:114.1,d:["福田","南山","罗湖","宝安","龙岗"]},{n:"珠海",lng:113.6,d:["香洲","斗门"]},{n:"佛山",lng:113.1,d:["禅城","南海","顺德"]},{n:"东莞",lng:113.8,d:[]},{n:"中山",lng:113.4,d:[]},{n:"惠州",lng:114.4,d:["惠城","惠阳"]},{n:"汕头",lng:116.7,d:["金平","龙湖"]},{n:"湛江",lng:110.4,d:["赤坎","霞山"]},{n:"茂名",lng:110.9,d:["茂南"]},{n:"韶关",lng:113.6,d:["浈江","武江"]},{n:"江门",lng:113.1,d:["蓬江","江海"]},{n:"肇庆",lng:112.5,d:["端州","鼎湖"]},{n:"梅州",lng:116.1,d:["梅江"]},{n:"清远",lng:113.0,d:["清城"]},{n:"揭阳",lng:116.4,d:["榕城"]},{n:"潮州",lng:116.6,d:["湘桥"]},{n:"河源",lng:114.7,d:["源城"]}]]];
-    renderProv();
+let _curLng=116.4,_gender=1,_isLunar=0,_regions=null;
+const WD=['日','一','二','三','四','五','六'];
+function X(id){return document.getElementById(id);}
+function setGender(g){_gender=g;X('bm').classList.toggle('on',g===1);X('bf').classList.toggle('on',g===0);}
+function setCal(v){_isLunar=v;X('bs').classList.toggle('on',v===0);X('bl').classList.toggle('on',v===1);}
+
+// ===== 加载地区数据 =====
+function loadRegions(){
+  fetch('/regions.json').then(function(r){return r.json()}).then(function(data){
+    _regions=data;renderProv();
+  }).catch(function(e){
+    console.warn('regions load failed',e);renderProv();
   });
 }
 function renderProv(){
-  let o='';for(const p of REG)o+=`<option>${p[0]}</option>`;
-  X('sp').innerHTML=o;X('sp').value='广东';onProv();
+  var o='<option>请选择</option>';
+  if(_regions){var keys=Object.keys(_regions);for(var i=0;i<keys.length;i++)o+='<option>'+keys[i]+'</option>';}
+  X('sp').innerHTML=o;if(_regions&&_regions['广东']){X('sp').value='广东';onProv();}
 }
 function onProv(){
-  const name=X('sp').value;
-  const prov=REG.find(p=>p[0]===name);
-  X('sc').innerHTML='<option>请选择</option>';
-  X('sx').innerHTML='<option>请先选市</option>';
-  if(!prov)return;
-  let o='<option>请选择</option>';
-  for(const c of prov[1])o+=`<option value="${c.lng}|${c.n}">${c.n}</option>`;
+  var name=X('sp').value;
+  X('sc').innerHTML='<option>请选择</option>';X('sx').innerHTML='<option>请先选市</option>';
+  if(!_regions||!name||!_regions[name])return;
+  var cities=_regions[name],o='<option>请选择</option>';
+  for(var i=0;i<cities.length;i++)o+='<option value="'+cities[i].lng+'|'+cities[i].n+'">'+cities[i].n+'</option>';
   X('sc').innerHTML=o;
 }
 function onCity(){
-  const val=X('sc').value;
-  X('sx').innerHTML='<option>请选择</option>';
+  var val=X('sc').value;X('sx').innerHTML='<option>请选择</option>';
   if(!val||val==='请选择')return;
-  const [lngStr,cname]=val.split('|');
-  _curLng=parseFloat(lngStr)||116.4;
-  const prov=REG.find(p=>p[0]===X('sp').value);
-  if(!prov)return;
-  const city=prov[1].find(c=>c.n===cname);
+  var parts=val.split('|');_curLng=parseFloat(parts[0])||116.4;
+  var pname=X('sp').value;if(!_regions||!_regions[pname])return;
+  var cities=_regions[pname],city=null;
+  for(var i=0;i<cities.length;i++){if(cities[i].n===parts[1]){city=cities[i];break;}}
   if(!city)return;
-  let o='';
-  for(const d of city.d)o+=`<option>${d}</option>`;
-  X('sx').innerHTML=o||`<option>${cname}市区</option>`;
-}</option>`;
-  X('sx').innerHTML=o||`<option>${cname}市区</option>`;
+  var o='';for(var i=0;i<city.d.length;i++)o+='<option>'+city.d[i]+'</option>';
+  X('sx').innerHTML=o||'<option>'+parts[1]+'市区</option>';
 }
 
+// ===== 时间选择器 =====
 function initSelects(){
-  const n=new Date(),cy=n.getFullYear();
-  let o='';for(let i=cy-80;i<=cy;i++)o+=`<option value="${i}"${i===cy-30?' selected':''}>${i}</option>`;
-  X('sy').innerHTML=o;
-  o='';for(let i=1;i<=12;i++)o+=`<option value="${i}"${i===6?' selected':''}>${i}</option>`;
-  X('sm').innerHTML=o;
-  o='';for(let i=1;i<=31;i++)o+=`<option value="${i}"${i===15?' selected':''}>${i}</option>`;
-  X('sd').innerHTML=o;
-  o='';for(let i=0;i<=23;i++)o+=`<option value="${i}"${i===8?' selected':''}>${String(i).padStart(2,'0')}</option>`;
-  X('sh').innerHTML=o;
-  o='';for(let i=0;i<=59;i++)o+=`<option value="${i}">${String(i).padStart(2,'0')}</option>`;
+  var n=new Date(),cy=n.getFullYear(),o='';
+  for(var i=cy-80;i<=cy;i++)o+='<option value="'+i+'"'+(i===cy-30?' selected':'')+'>'+i+'</option>';
+  X('sy').innerHTML=o;o='';
+  for(var i=1;i<=12;i++)o+='<option value="'+i+'"'+(i===6?' selected':'')+'>'+i+'</option>';
+  X('sm').innerHTML=o;o='';
+  for(var i=1;i<=31;i++)o+='<option value="'+i+'"'+(i===15?' selected':'')+'>'+i+'</option>';
+  X('sd').innerHTML=o;o='';
+  for(var i=0;i<=23;i++)o+='<option value="'+i+'"'+(i===8?' selected':'')+'>'+(i<10?'0':'')+i+'</option>';
+  X('sh').innerHTML=o;o='';
+  for(var i=0;i<=59;i++)o+='<option value="'+i+'">'+(i<10?'0':'')+i+'</option>';
   X('smi').innerHTML=o;
 }
 
-async function go(){
-  const y=+X('sy').value,m=+X('sm').value,d=+X('sd').value,h=+X('sh').value,mi=+X('smi').value;
+// ===== 发起分析 =====
+function go(){
+  var y=+X('sy').value,m=+X('sm').value,d=+X('sd').value,h=+X('sh').value,mi=+X('smi').value;
   if(!y||!m||!d)return;
-  X('ld').classList.add('on');X('result').classList.remove('on');window.scrollTo({top:0,behavior:'smooth'});
-  try{
-    const [resp,aiResp]=await Promise.all([
-      fetch('/api/bazi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar})}),
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar})})
-    ]);
-    const r=await resp.json();if(r.error){alert(r.error);return}
-    const ai=await aiResp.json().catch(()=>({fallback:true}));
-    render(r,ai);
-  }catch(e){alert('请求失败: '+e.message)}
-  finally{X('ld').classList.remove('on')}
+  X('ld').classList.add('on');X('result').classList.remove('on');window.scrollTo(0,0);
+  Promise.all([
+    fetch('/api/bazi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar})}).then(function(r){return r.json()}),
+    fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar})}).then(function(r){return r.json()}).catch(function(){return {fallback:true}})
+  ]).then(function(results){
+    var r=results[0],ai=results[1];
+    if(r.error){alert(r.error);X('ld').classList.remove('on');return}
+    render(r,ai);X('ld').classList.remove('on');
+  }).catch(function(e){alert('请求失败: '+e.message);X('ld').classList.remove('on')});
 }
 
+// ===== 渲染结果 =====
 function render(r,ai){
-  const city=X('sc').value.split('|')[1]||'',county=X('sx').value||'';
-  let h='';
-  h+='<div class="bazi-card"><div class="sect">基本信息</div>';
-  h+='<div class="info-row">';
-  h+=`<span class="info-tag">${r.gender}命 · <b>${r.bazi}</b> · 日主<b> ${r.riGan}</b></span>`;
-  h+=`<span class="info-tag">北京 <b>${r.beijingTime}</b></span>`;
-  h+=`<span class="info-tag">真太阳时 <b>${r.trueSolar}</b> (${r.solarOffset>0?'+':''}${r.solarOffset}分)</span>`;
-  h+=`<span class="info-tag">出生地 <b>${X('sp').value} ${city} ${county}</b></span>`;
+  var city=X('sc').value.split('|')[1]||'',county=X('sx').value||'',h='';
+  h+='<div class="bazi-card"><div class="sect">基本信息</div><div class="info-row">';
+  h+='<span class="info-tag">'+r.gender+'命 · <b>'+r.bazi+'</b> · 日主<b> '+r.riGan+'</b></span>';
+  h+='<span class="info-tag">北京 <b>'+r.beijingTime+'</b></span>';
+  h+='<span class="info-tag">真太阳时 <b>'+r.trueSolar+'</b> ('+(r.solarOffset>0?'+':'')+r.solarOffset+'分)</span>';
+  h+='<span class="info-tag">出生地 <b>'+X('sp').value+' '+city+' '+county+'</b></span>';
   h+='</div></div>';
 
   h+='<div class="bazi-card"><div class="sect">四柱八字</div>';
-  h+='<table class="bz-table"><thead><tr>'+r.pillars.map(p=>`<th>${p.name}</th>`).join('')+'</tr></thead><tbody>';
-  h+='<tr>'+r.pillars.map(p=>`<td class="rc"><div class="gz">${p.gan}</div><div style="font-size:11px;color:var(--dim)">${p.shiShen}</div></td>`).join('')+'</tr>';
-  h+='<tr>'+r.pillars.map(p=>`<td class="rc"><div class="gz">${p.zhi}</div><div class="ssz">${p.shiShenZhi}</div></td>`).join('')+'</tr>';
-  h+='<tr>'+r.pillars.map(p=>`<td><div class="cg">${(p.cangGan||[]).join(' ')}</div></td>`).join('')+'</tr>';
-  h+='<tr>'+r.pillars.map(p=>`<td><div class="ny">${p.naYin}</div></td>`).join('')+'</tr>';
+  h+='<table class="bz-table"><thead><tr>'+r.pillars.map(function(p){return '<th>'+p.name+'</th>'}).join('')+'</tr></thead><tbody>';
+  h+='<tr>'+r.pillars.map(function(p){return '<td class="rc"><div class="gz">'+p.gan+'</div><div style="font-size:11px;color:var(--dim)">'+p.shiShen+'</div></td>'}).join('')+'</tr>';
+  h+='<tr>'+r.pillars.map(function(p){return '<td class="rc"><div class="gz">'+p.zhi+'</div><div class="ssz">'+p.shiShenZhi+'</div></td>'}).join('')+'</tr>';
+  h+='<tr>'+r.pillars.map(function(p){return '<td><div class="cg">'+(p.cangGan||[]).join(' ')+'</div></td>'}).join('')+'</tr>';
+  h+='<tr>'+r.pillars.map(function(p){return '<td><div class="ny">'+p.naYin+'</div></td>'}).join('')+'</tr>';
   h+='</tbody></table></div>';
 
-  const wxN=['木','火','土','金','水'],wxC=['wood','fire','earth','metal','water'];
-  const total=Math.max(1,Object.values(r.wuxingCount).reduce((a,b)=>a+b,0));
+  var wxN=['木','火','土','金','水'],wxC=['wood','fire','earth','metal','water'],wxV=Object.values(r.wuxingCount);
+  var total=Math.max(1,wxV.reduce(function(a,b){return a+b},0));
   h+='<div class="bazi-card"><div class="sect">五行分布</div><div class="wx-bar">';
-  for(let i=0;i<5;i++){
-    const cnt=r.wuxingCount[wxN[i]]||0;
-    h+=`<div class="wx-item"><div class="wn">${wxN[i]} ${cnt}</div><div class="wb"><div class="wf ${wxC[i]}" style="width:${Math.round(cnt/total*100)}%"></div></div></div>`;
-  }
+  for(var i=0;i<5;i++){var cnt=r.wuxingCount[wxN[i]]||0;h+='<div class="wx-item"><div class="wn">'+wxN[i]+' '+cnt+'</div><div class="wb"><div class="wf '+wxC[i]+'" style="width:'+Math.round(cnt/total*100)+'%"></div></div></div>';}
   h+='</div></div>';
 
   if(r.dayun.length&&!r.dayun[0].info){
     h+='<div class="bazi-card"><div class="sect">大运流程</div><div class="dy-track">';
-    for(const dy of r.dayun){
-      h+=`<div class="dy-block${dy.cur?' cur':''}"><div class="dy-gz">${dy.ganZhi}</div><div class="dy-age">${dy.ages||dy.startAge}岁</div>${dy.cur?'<div class="dy-tag">当前</div>':''}</div>`;
-    }
+    for(var i=0;i<r.dayun.length;i++){var dy=r.dayun[i];h+='<div class="dy-block'+(dy.cur?' cur':'')+'"><div class="dy-gz">'+dy.ganZhi+'</div><div class="dy-age">'+(dy.ages||dy.startAge)+'岁</div>'+(dy.cur?'<div class="dy-tag">当前</div>':'')+'</div>';}
     h+='</div></div>';
   }
 
-  const useAI=ai&&!ai.fallback&&ai.content;
+  var useAI=ai&&!ai.fallback&&ai.content;
   h+='<div class="an-card"><div class="an-title">命理分析报告</div>';
   if(useAI){
-    const aiHtml=ai.content.replace(/\*\*(.+?)\*\*/g,'<em>$1</em>').replace(/###?\s*(.+)/g,'<div style="color:var(--gold3);font-weight:600;margin:16px 0 4px;font-size:14px">$1</div>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-    h+=`<div class="an-p">${aiHtml}</div>`;
-    h+=`<div class="an-summary">DeepSeek AI · 八字命理分析 | 仅供参考</div>`;
-  }else{
-    h+=`<div class="an-p" style="color:var(--dim)">分析服务暂不可用（${ai?.reason||'未知'}），请稍后重试。</div>`;
-  }
+    var aiTxt=ai.content.replace(/\*\*(.+?)\*\*/g,'<em>$1</em>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    h+='<div class="an-p">'+aiTxt+'</div><div class="an-summary">DeepSeek AI · 仅供参考</div>';
+  }else{h+='<div class="an-p" style="color:var(--dim)">分析服务暂不可用（'+(ai?ai.reason:'未知')+'），请稍后重试。</div>';}
   h+='</div>';
-
-  X('result').innerHTML=h;X('result').classList.add('on');
-  X('result').scrollIntoView({behavior:'smooth',block:'start'});
+  X('result').innerHTML=h;X('result').classList.add('on');X('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-initSelects();initRegion();
+initSelects();loadRegions();
 </script>
 </body>
 </html>
