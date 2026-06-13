@@ -183,21 +183,59 @@ app.post('/api/analyze', async (req, res) => {
       大运起运: bz.getYun?.(gender)?.getStartYear?.() || '未知'
     };
 
-    const prompt = `你是八字命理专家，精通子平法、穷通宝鉴、三命通会、神峰通考。请根据以下命盘进行专业分析，不要自我介绍，直接输出分析内容。
+    const prompt = `你是八字命理专家，精通子平法、穷通宝鉴、三命通会、神峰通考。请根据以下命盘进行完整深度分析。不要自我介绍，直接输出。
 
 ${JSON.stringify(data, null, 2)}
 
-${question ? `求测重点：${question}` : ''}
+请严格按以下十六个维度逐一分析，每个维度用###标题，控制在1200字以内：
 
-请按以下结构进行分析，控制在800字以内：
-1. 格局判定：判定八字格局（正格/变格），说明理由
-2. 身强身弱：日主旺衰判定+用神取用
-3. 性格特点：结合日主+十神组合分析
-4. 事业财运：职业方向+求财方式
-5. 婚恋感情：配偶星/宫位分析
-6. 健康注意：五行偏枯对应的身体部位
-7. 大运走势：当前大运+未来十年趋势
-8. 综合建议`;
+### 一、格局分析
+判定八字格局（正格/变格），说明月令、透干、核心关系。
+
+### 二、身强身弱
+日主旺衰判定+用神取用+喜忌分析。
+
+### 三、病药分析
+用神峰通考病药论：列出3-5个病、2-3个药。
+
+### 四、五行力量
+五行统计+分布特点+关键结论。
+
+### 五、家庭情况
+祖上（年柱分析）、父母（财星/印星）、兄弟姐妹（比劫分析）。
+
+### 六、性格
+日主+十神组合分析，总结一句话。
+
+### 七、身材长相
+身高/肤色/五官/气质/体型（需结合地域判断）。
+
+### 八、学历
+印星分析+限制因素+结论。
+
+### 九、职业
+发展方向+最佳职业类型（不罗列多种，直接给最匹配的）。
+
+### 十、健康
+五行偏枯对应身体部位+具体注意事项。
+
+### 十一、婚恋
+配偶星/宫位分析+感情时间线+结婚窗口。
+
+### 十二、子女
+子女星分析+头胎性别+数量。
+
+### 十三、大运走势
+当前大运+未来十年趋势+关键大运年份。
+
+### 十四、重大事件年份
+列出3-5个关键年份+对应事件类型（伤病灾/破财/婚恋/升迁等）。
+
+### 十五、当前流年
+分析当前年份重点提示。
+
+### 十六、综合建议
+一句话总结+行动建议。`;
 
     if (!DEEPSEEK_KEY) {
       return res.json({ content: null, fallback: true, reason: '未配置API Key' });
@@ -208,7 +246,7 @@ ${question ? `求测重点：${question}` : ''}
     const aiResp = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${DEEPSEEK_KEY}` },
-      body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.7, max_tokens: 1500, stream: false }),
+      body: JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.7, max_tokens: 2000, stream: false }),
       signal: controller.signal
     });
     clearTimeout(timeout);
