@@ -100,15 +100,6 @@ h1 small{display:block;font-size:.45em;color:var(--gold-dim);letter-spacing:2px;
 .highlight-gold{color:var(--gold-lt);font-weight:700}
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--card-border),transparent);margin:26px 0;border:none}
 .footer{text-align:center;padding:30px 0 20px;color:#6a5e42;font-size:.75em;letter-spacing:2px}
-.bing-yao{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
-.bing-box,.yao-box{border-radius:12px;padding:14px}
-.bing-box{background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.25)}
-.yao-box{background:rgba(52,199,89,.08);border:1px solid rgba(52,199,89,.25)}
-.bing-box h4{color:#e57373;margin-bottom:8px;font-size:.9em}
-.yao-box h4{color:#81c784;margin-bottom:8px;font-size:.9em}
-.bing-item,.yao-item{padding:4px 0;font-size:.85em;color:#c0b695;border-bottom:1px solid rgba(255,59,48,.1)}
-.yao-item{border-color:rgba(52,199,89,.1)}
-.bing-item:last-child,.yao-item:last-child{border-bottom:none}
 @media(max-width:480px){.bazi-table .stem{font-size:1.4em}.bazi-table .branch{font-size:1.2em}.wx-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -139,7 +130,7 @@ h1 small{display:block;font-size:.45em;color:var(--gold-dim);letter-spacing:2px;
 </div>
 <div class="ld" id="ld"><div class="spin"></div><div style="color:var(--dim);font-size:13px">八字排盘中…</div></div>
 <div id="result"></div>
-
+<div class="footer">晴子 · 子平命理 | 仅供参考</div>
 </div><script>
 var _curLng=116.4,_gender=1,_isLunar=0,_regions=null;
 function X(id){return document.getElementById(id);}
@@ -199,13 +190,72 @@ function go(){
   var y=+X('sy').value,m=+X('sm').value,d=+X('sd').value,h=+X('sh').value,mi=+X('smi').value;
   if(!y||!m||!d)return;
   X('ld').classList.add('on');X('result').classList.remove('on');window.scrollTo(0,0);
-  var q=JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar,birthplace:X('sp').value+' '+(X('sc').value.split('|')[1]||'')+' '+(X('sx').value||'')});
-  fetch('/api/full-analysis',{method:'POST',headers:{'Content-Type':'application/json'},body:q})
-    .then(function(r){return r.json()}).then(function(rs){if(rs.error){alert(rs.error)}else{X('result').innerHTML=rs.html;X('result').classList.add('on');X('result').scrollIntoView({behavior:'smooth',block:'start'})}X('ld').classList.remove('on')})
-    .catch(function(e){alert('请求失败: '+e.message);X('ld').classList.remove('on')});
+  var q=JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar});
+  var hd={'Content-Type':'application/json'};
+  Promise.all([
+    fetch('/api/bazi',{method:'POST',headers:hd,body:q}).then(function(r){return r.json()}),
+    fetch('/api/analyze',{method:'POST',headers:hd,body:q}).then(function(r){return r.json()}).catch(function(){return {fallback:true}})
+  ]).then(function(rs){
+    var r=rs[0],ai=rs[1];
+    if(r.error){alert(r.error);X('ld').classList.remove('on');return}
+    render(r,ai);X('ld').classList.remove('on');
+  }).catch(function(e){alert('请求失败: '+e.message);X('ld').classList.remove('on')});
 }
 
+function render(r,ai){
+  var bz=r.bazi.split(' '),ct=X('sc').value.split('|')[1]||'',cn=X('sx').value||'',h='';
+  h+='<p class="subtitle">'+r.bazi+' · '+r.gender+'命 · '+bz[2][0]+'日主<br>'+r.beijingTime+' · '+r.trueSolar+' 真太阳时 ('+(r.solarOffset>0?'+':'')+r.solarOffset+'分)<br>'+X('sp').value+' '+ct+' '+cn+'</p>';
+  h+='<div class="section-title">一、排盘</div>';
+  h+='<div class="bazi-card"><div class="bazi-header"><span class="title">四柱八字</span><span class="sex">'+r.gender+'</span></div>';
+  h+='<table class="bazi-table"><thead><tr>';
+  for(var i=0;i<r.pillars.length;i++)h+='<th>'+r.pillars[i].name+'</th>';
+  h+='</tr></thead><tbody>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++){var p=r.pillars[i];h+='<td><span class="stem '+gCls(p.gan)+'">'+p.gan+'</span></td>';}h+='</tr>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++){var p=r.pillars[i];h+='<td><span class="branch '+zCls(p.zhi)+'">'+p.zhi+'</span><span class="ten-label">'+p.shiShenZhi.split('/')[0]+'</span></td>';}h+='</tr>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++){var p=r.pillars[i],ss=p.shiShen==='日主'?'ss-master':ssCls(p.gan);h+='<td><span class="shishen-tag '+ss+'">'+p.shiShen+'</span></td>';}h+='</tr>';
+  h+='</tbody></table><div class="bazi-divider"></div><table class="bazi-table"><tbody>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++){var p=r.pillars[i];h+='<td><div class="canggan-group">';if(p.cangGan){for(var j=0;j<p.cangGan.length;j++){h+='<span class="canggan-item"><span class="cg-dot dot-'+dotCls(p.cangGan[j])+'"></span>'+p.cangGan[j]+'</span>';}}h+='</div></td>';}h+='</tr>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++)h+='<td><span class="nayin-tag">'+r.pillars[i].naYin+'</span></td>';h+='</tr>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++)h+='<td><span class="kongwang">-</span></td>';h+='</tr>';
+  h+='</tbody></table>';
+  h+='<div class="bazi-footer"><span class="bf-tag">日主 '+bz[2][0]+'</span><span class="bf-tag">纳音 '+r.pillars[2].naYin+'</span><span class="bf-tag">'+r.gender+'命</span></div></div>';
 
+  var wxK=['木','火','土','金','水'],wxC=r.wuxingCount,wxT=0;
+  for(var i=0;i<wxK.length;i++)wxT+=wxC[wxK[i]]||0;if(wxT===0)wxT=1;
+  h+='<div class="section-title">二、五行力量分析</div>';
+  h+='<div class="bazi-card">';
+  h+='<div style="display:flex;height:22px;border-radius:11px;overflow:hidden;background:#1a2027;margin-bottom:14px">';
+  for(var i=0;i<wxK.length;i++){var cnt=wxC[wxK[i]]||0;if(cnt>0)h+='<div style="width:'+Math.round(cnt/wxT*100)+'%;background:var(--'+wxClr[wxK[i]]+');display:flex;align-items:center;justify-content:center;font-size:.55em;color:#fff;font-weight:600">'+wxK[i]+cnt+'</div>';}
+  h+='</div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
+  for(var i=0;i<wxK.length;i++)h+='<div style="background:rgba(42,48,56,.4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:.7em;color:var(--'+wxClr[wxK[i]]+');margin-bottom:2px">'+wxK[i]+'</div><div style="font-size:.85em;color:var(--gold-lt);font-weight:600">'+(wxC[wxK[i]]||0)+'</div></div>';
+  h+='<div style="background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:.7em;color:var(--gold);margin-bottom:2px">日主</div><div style="font-size:.85em;color:var(--gold-lt);font-weight:600">'+bz[2][0]+'</div></div>';
+  h+='</div></div>';
+
+  if(r.dayun.length&&!r.dayun[0].info){
+    h+='<div class="section-title">三、大运流程</div><div class="bazi-card"><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px">';
+    for(var i=0;i<r.dayun.length;i++){var dy=r.dayun[i];
+      h+='<div style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:52px;padding:8px 6px;border-radius:10px;background:#1a2027;border:1px solid '+(dy.cur?'var(--gold)':'#2a3038')+';'+(dy.cur?'background:linear-gradient(180deg,rgba(200,169,110,.08),transparent);':'')+'">';
+      if(dy.cur)h+='<span style="position:absolute;top:-7px;right:-5px;font-size:.5em;color:var(--gold);background:#0b0e12;padding:0 4px;border-radius:4px;border:1px solid var(--gold)">当前</span>';
+      h+='<span style="font-size:1.05em;font-weight:700;color:var(--gold-lt)">'+dy.ganZhi+'</span><span style="font-size:.58em;color:#6a7a88;margin-top:2px">'+(dy.ages||dy.startAge)+'岁</span></div>';
+    }
+    h+='</div></div>';
+  }
+
+  var useAI=ai&&!ai.fallback&&ai.content;
+  h+='<div class="section-title">四、命理分析</div>';
+  if(useAI){
+    var at=ai.content;
+    at=at.replace(/###\s*(.+)/g,'<p style="color:var(--gold-lt);font-weight:600;margin:16px 0 6px;font-size:.95em">$1</p>');
+    at=at.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--gold-lt)">$1</strong>');
+    at=at.replace(/[-•]\s+(.+)/g,'<li>$1</li>');
+    h+='<div class="card">'+at.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>')+'</div>';
+  }else{
+    h+='<div class="card"><p style="color:var(--dim)">分析服务暂不可用（'+(ai?ai.reason:'未知')+'），请稍后重试。</p></div>';
+  }
+  h+='<hr class="divider">';
+  X('result').innerHTML=h;X('result').classList.add('on');X('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
 initSelects();loadRegions();
 </script>
 </body>
