@@ -45,6 +45,48 @@ function calcTrueSolar(year, month, day, hour, minute, longitude) {
   return { year: adjYear, month: adjMonth, day: adjDay, hour: adjHour, minute: adjMin, offsetMin: Math.round(offset) };
 }
 
+function analyzeJiaTing(pillars,riGan){
+  var nz=pillars[0],nFGanSS=getShiShen(riGan,nz.gan);
+  var zuShang=nFGanSS.includes('财')?'祖上家境普通，非大富大贵。':'祖上普通家庭。';
+  var allGans=pillars.map(function(p){return p.gan});
+  var hasCai=allGans.some(function(g){return getShiShen(riGan,g).includes('财')}),hasYin=allGans.some(function(g){return getShiShen(riGan,g).includes('印')});
+  var fuQin=hasCai?'父亲有实际能力，经济条件尚可。':'父星不显，父亲对命主影响偏弱。';
+  var muQin=hasYin?'母亲能力强、有文化、在家中占据主导。':'母星平常。';
+  var ganSS=allGans.map(function(g){return getShiShen(riGan,g)}),jieCount=ganSS.filter(function(s){return s==='劫财'||s==='比肩'}).length;
+  var xiongDi=jieCount>0?'有'+(jieCount>1?'1~2':'1')+'个兄弟或极亲近的朋友。':'兄弟姐妹少或无。';
+  return{zuShang:zuShang,fuQin:fuQin,muQin:muQin,xiongDi:xiongDi};
+}
+function analyzeXueLi(pillars,riGan){
+  var allGans=pillars.map(function(p){return p.gan}),yinCount=allGans.filter(function(g){return getShiShen(riGan,g).includes('印')}).length,yinStrong=yinCount>=2,jieLun='';
+  if(yinStrong)jieLun='印星有力，本科以上，有机会读硕士。';else if(yinCount>=1)jieLun='印星一般，大专到本科水平。';else jieLun='印星偏弱，学历中等，但社会经验丰富。';
+  return{level:yinStrong?'高':'中',conclusion:jieLun};
+}
+function analyzeZiNv(pillars,riGan,gender){
+  var isMale=gender===1,allGans=pillars.map(function(p){return p.gan}),childPresent=isMale?allGans.some(function(g){return getShiShen(riGan,g).includes('杀')||getShiShen(riGan,g).includes('官')}):allGans.some(function(g){return getShiShen(riGan,g).includes('食')||getShiShen(riGan,g).includes('伤')});
+  return{touTai:'头胎儿子可能性偏大。',count:childPresent?'未来有1~2个孩子。':'未来有1个孩子。'};
+}
+function analyzeDaYunDetail(dayun){
+  var items=[];
+  for(var i=0;i<dayun.length;i++){var dy=dayun[i],ages=dy.ages.split('-'),a0=parseInt(ages[0]),desc='';
+    if(a0<15)desc='少年运，学业成长阶段。';else if(a0<25)desc='青年运，求学或初入社会。';else if(a0<35)desc='青壮年运，事业关键期。';else if(a0<45)desc='中年运，财富积累阶段。';else desc='中晚年运，事业稳固或转型。';
+    items.push({ganZhi:dy.ganZhi,ages:dy.ages,cur:dy.cur,desc:desc});}
+  return items;
+}
+function analyzeDaShiJian(pillars,riGan,dayun,birthYear){
+  var items=[],curYear=new Date().getFullYear(),age=curYear-birthYear;
+  if(age>=18)items.push({year:birthYear+18,age:18,event:'高考/大学',reason:'学业关键节点'});
+  if(age>=22)items.push({year:birthYear+22,age:22,event:'进入社会/初入职场',reason:'人生转折点'});
+  var curDY=dayun.find(function(d){return d.cur});if(curDY){var sa=parseInt(curDY.ages.split('-')[0]);items.push({year:birthYear+sa,age:sa,event:'换大运',reason:'进入'+curDY.ganZhi+'大运'});}
+  if(curYear>birthYear+18)items.push({year:curYear,age:curYear-birthYear,event:'当前年份',reason:'当前流年重点把握'});
+  items.sort(function(a,b){return a.year-b.year});return items.slice(0,7);
+}
+function analyzeLiuNian(pillars,riGan,dayun,curYear,birthYear){
+  var curDY=dayun.find(function(d){return d.cur}),r='今年是转型与调整之年。';
+  if(curDY)r='当前在'+curDY.ganZhi+'大运中，'+r;r+='需关注事业、感情、健康的平衡发展。';
+  return{age:curYear-birthYear,desc:r};
+}
+
+
 // API: 排八字
 app.post('/api/bazi', (req, res) => {
   try {
@@ -230,6 +272,25 @@ function buildAnalysisHtml(riGan,riZhi,pillars,wxCount,dayun,gender,beijingTime,
   h+='<div class="section-title">十一、综合建议</div><div class="card">';
   h+='<p>此命'+gj.gejuDetail+'，'+sq.level+'.'+ (gj.yongShen?'以<strong style="color:var(--gold-lt)">'+gj.yongShen+'</strong>为用神，':'')+'大运走势需关注用神当旺之运。</p>';
   h+='<p style="font-size:.85em;color:var(--dim);margin-top:10px">以上分析基于子平法规则引擎自动生成，仅供参考。</p></div>';
+  var jt=analyzeJiaTing(pillars,riGan),xl=analyzeXueLi(pillars,riGan);
+  var zn=analyzeZiNv(pillars,riGan,gender),dyd=analyzeDaYunDetail(dayun);
+  var dsj=analyzeDaShiJian(pillars,riGan,dayun,birthYear),ln=analyzeLiuNian(pillars,riGan,dayun,new Date().getFullYear(),birthYear);
+  h+='<hr class="divider"><div class="section-title">六、家庭情况</div><div class="card">';
+  h+='<p><strong style="color:var(--gold-lt)">祖上（年柱）</strong></p><p>年柱'+pillars[0].ganZhi+'。'+jt.zuShang+'</p>';
+  h+='<p style="margin-top:14px"><strong style="color:var(--gold-lt)">父母</strong></p><ul><li><strong>父星：</strong>'+jt.fuQin+'</li><li><strong>母星：</strong>'+jt.muQin+'</li></ul>';
+  h+='<p style="margin-top:14px"><strong style="color:var(--gold-lt)">兄弟姐妹</strong></p><p>'+jt.xiongDi+'</p></div>';
+  h+='<hr class="divider"><div class="section-title">八、学历</div><div class="card"><p>'+xl.conclusion+'</p></div>';
+  h+='<hr class="divider"><div class="section-title">十二、子女</div><div class="card"><p>'+zn.touTai+'，'+zn.count+'</p></div>';
+  h+='<hr class="divider"><div class="section-title">十三、大运走势</div><div class="card">';
+  for(var i=0;i<dyd.length;i++){var d=dyd[i];h+='<p style="'+(d.cur?'color:#e88060;font-size:.95em;font-weight:700;':'')+'margin-top:10px">'+d.ganZhi+'运（'+d.ages+'岁）'+(d.cur?' 当前':'')+'</p><p>'+d.desc+'</p>';}
+  h+='</div>';
+  h+='<hr class="divider"><div class="section-title">十四、重大事件年份</div><div class="card"><div class="table-wrap"><table>';
+  h+='<tr><th>年份</th><th>年龄</th><th>事件</th><th>命理依据</th></tr>';
+  for(var i=0;i<dsj.length;i++){var e=dsj[i];h+='<tr><td><strong>'+e.year+'</strong></td><td>'+e.age+'岁</td><td>'+e.event+'</td><td style="text-align:left;font-size:.82em">'+e.reason+'</td></tr>';}
+  h+='</table></div></div>';
+  h+='<hr class="divider"><div class="section-title">十五、当前流年总论</div><div class="card"><p>'+ln.desc+'</p></div>';
+
+
   return h;
 }
 
