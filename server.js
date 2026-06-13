@@ -220,23 +220,5 @@ ${question ? `求测重点：${question}` : ''}
   }
 });
 
-// ========== 城市列表 ==========
-app.get('/api/cities', (req, res) => {
-  res.json([
-    { name:'北京', lng:116.4 }, { name:'上海', lng:121.5 }, { name:'广州', lng:113.3 },
-    { name:'深圳', lng:114.1 }, { name:'成都', lng:104.1 }, { name:'重庆', lng:106.5 },
-    { name:'杭州', lng:120.2 }, { name:'南京', lng:118.8 }, { name:'武汉', lng:114.3 },
-    { name:'西安', lng:108.9 }, { name:'郑州', lng:113.7 }, { name:'济南', lng:117.0 },
-    { name:'青岛', lng:120.3 }, { name:'大连', lng:121.6 }, { name:'沈阳', lng:123.4 },
-    { name:'哈尔滨', lng:126.6 }, { name:'长春', lng:125.3 }, { name:'天津', lng:117.2 },
-    { name:'长沙', lng:112.9 }, { name:'福州', lng:119.3 }, { name:'厦门', lng:118.1 },
-    { name:'昆明', lng:102.7 }, { name:'贵阳', lng:106.7 }, { name:'南宁', lng:108.3 },
-    { name:'海口', lng:110.3 }, { name:'兰州', lng:103.7 }, { name:'西宁', lng:101.8 },
-    { name:'拉萨', lng:91.1 }, { name:'乌鲁', lng:87.6 }, { name:'呼和', lng:111.7 },
-    { name:'太原', lng:112.5 }, { name:'合肥', lng:117.3 }, { name:'南昌', lng:115.9 },
-    { name:'香港', lng:114.2 }, { name:'澳门', lng:113.5 }, { name:'台北', lng:121.5 }
-  ]);
-});
-
 app.get('/', (req, res) => res.sendFile(join(__dirname, 'public', 'index.html')));
 app.listen(PORT, () => console.log(`八字排盘服务启动: ${PORT}`));
