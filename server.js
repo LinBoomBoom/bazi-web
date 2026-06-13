@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import { Solar, Lunar } from 'lunar-typescript';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DEEPSEEK_KEY = proces…_KEY || '';
+const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
 
 app.use(express.json());
 app.use(express.static(join(__dirname, 'public')));
