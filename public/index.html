@@ -1,70 +1,116 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>八字 · 在线排盘</title>
 <style>
-:root{--bg:#060a10;--card:#0e141f;--card2:#131b28;--border:#1a2636;--border2:#233045;--gold:#c8a96e;--gold2:#a08048;--gold3:#e0cba0;--text:#c8d0d8;--dim:#687080;--dim2:#485060;--red:#e06060;--green:#5cb888;--blue:#68a0d8;--purple:#a888d8;--warn:#d4a840;--wood:#7ec87e;--fire:#e87060;--earth:#d8a858;--metal:#d4c870;--water:#60a0d8;--font:'PingFang SC','Microsoft YaHei',sans-serif}
+:root{--bg:#0b0e12;--card-bg:linear-gradient(135deg,#14191f,#1a2027);--card-border:#2a3038;--gold:#c8a96e;--gold-lt:#e8d5b0;--gold-dim:#8a7e62;--text:#c0b695;--dim:#6a7a88;--red:#ff3b30;--green:#34c759;--orange:#ff9f0a;--blue:#5ac8fa;--gray:#aeaeb2;--font:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;line-height:1.7}
-.container{max-width:720px;margin:0 auto;padding:0 16px 40px}
-.hd{text-align:center;padding:36px 0 20px;border-bottom:1px solid var(--border);margin-bottom:24px}
-.hd h1{font-size:26px;color:var(--gold);letter-spacing:3px;font-weight:700}
-.hd .sub{font-size:12px;color:var(--dim);margin-top:4px;letter-spacing:2px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.8;min-height:100vh}
+.container{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{text-align:center;font-size:1.5em;color:var(--gold-lt);margin:20px 0 8px;letter-spacing:4px}
+h1 small{display:block;font-size:.45em;color:var(--gold-dim);letter-spacing:2px;margin-top:6px;font-weight:400}
+.subtitle{text-align:center;color:var(--gold-dim);font-size:.8em;margin-bottom:24px}
 .ld{text-align:center;padding:48px 0;display:none}.ld.on{display:block}
-.spin{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 12px}
+.spin{width:28px;height:28px;border:2px solid var(--card-border);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 12px}
 @keyframes sp{to{transform:rotate(360deg)}}
 #result{display:none}#result.on{display:block}
-.icard{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
+
+/* 输入卡片 */
+.icard{background:linear-gradient(135deg,#14191f,#1a2027);border:1px solid var(--card-border);border-radius:16px;padding:22px;margin-bottom:20px}
 .sel-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:flex-end;margin-bottom:10px}
-.sel-row:last-child{margin-bottom:0}
-.sg{display:flex;flex-direction:column;align-items:center;gap:4px}
-.sg label{font-size:9px;color:var(--dim2);letter-spacing:1px}
-.sg select,.sg input{background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:8px 6px;font-size:13px;outline:none;text-align:center;cursor:pointer;min-width:56px;transition:.2s;font-family:var(--font)}
-.sg select:focus,.sg input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(200,169,110,.15)}
-.sec-label{font-size:12px;color:var(--dim2);letter-spacing:1px;white-space:nowrap;flex-shrink:0}
-.btn{background:linear-gradient(135deg,#c8a96e,#9a7840);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:13px;cursor:pointer;letter-spacing:1px;font-weight:600;height:42px;transition:all .25s ease}
-.btn:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,169,110,.25)}
-.btn-pai{display:block;width:240px;margin:18px auto 0;height:48px;font-size:15px;letter-spacing:3px;border-radius:12px}
-.gender-row{display:inline-flex;background:var(--bg);border:1px solid var(--border2);border-radius:10px;overflow:hidden}
-.gender-row .gr-btn{background:transparent;border:none;color:var(--dim);padding:8px 20px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:all .2s;font-family:var(--font)}
+.sr-last{margin-bottom:0}
+.sg{display:flex;flex-direction:column;align-items:center;gap:3px}
+.sg label{font-size:9px;color:var(--dim);letter-spacing:1px}
+.sg select{background:#1a2027;border:1px solid var(--card-border);border-radius:8px;color:var(--text);padding:7px 5px;font-size:12px;outline:none;text-align:center;cursor:pointer;min-width:56px;transition:.2s;font-family:var(--font)}
+.sg select:focus{border-color:var(--gold)}
+.sec-label{font-size:11px;color:var(--gold-dim);letter-spacing:1px;white-space:nowrap;flex-shrink:0}
+.btn{background:linear-gradient(135deg,#c8a96e,#9a7840);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:13px;cursor:pointer;letter-spacing:1px;font-weight:600;height:40px;transition:all .25s ease;font-family:var(--font)}
+.btn:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 4px 12px rgba(200,169,110,.25)}
+.btn-pai{display:block;width:200px;margin:16px auto 0;height:44px;font-size:14px;letter-spacing:3px;border-radius:12px}
+.gender-row{display:inline-flex;background:#1a2027;border:1px solid var(--card-border);border-radius:10px;overflow:hidden}
+.gender-row .gr-btn{background:transparent;border:none;color:var(--dim);padding:7px 18px;font-size:12px;cursor:pointer;letter-spacing:1px;transition:all .2s;font-family:var(--font)}
 .gender-row .gr-btn.on{background:rgba(200,169,110,.15);color:var(--gold)}
-.bazi-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
-.sect{font-size:13px;color:var(--gold);margin-bottom:16px;letter-spacing:2px;font-weight:600;display:flex;align-items:center;gap:8px}
-.sect::before{content:'';width:3px;height:14px;background:var(--gold);border-radius:1.5px}
-.info-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.info-tag{background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.12);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--gold3)}
-.info-tag b{color:var(--gold);font-weight:600}
-.bz-table{width:100%;border-collapse:collapse;table-layout:fixed}
-.bz-table th,.bz-table td{text-align:center;padding:10px 4px;border:1px solid var(--border2);font-size:13px;vertical-align:middle}
-.bz-table th{background:rgba(200,169,110,.05);color:var(--dim);font-size:10px;font-weight:500;letter-spacing:1px}
-.bz-table .gz{font-size:22px;color:var(--gold);font-weight:700;letter-spacing:2px}
-.bz-table .ny{font-size:10px;color:var(--dim2)}.bz-table .cg{font-size:10px;color:var(--purple)}.bz-table .ssz{font-size:10px;color:var(--blue)}.bz-table .rc{background:rgba(200,169,110,.03)}
-.wx-bar{display:flex;gap:4px}.wx-item{flex:1;text-align:center}
-.wx-item .wn{font-size:10px;color:var(--dim2);margin-bottom:2px}
-.wx-item .wb{height:6px;background:var(--border2);border-radius:3px;overflow:hidden}
-.wx-item .wf{height:100%;border-radius:3px;transition:width .5s ease}
-.wf.wood{background:var(--wood)}.wf.fire{background:var(--fire)}.wf.earth{background:var(--earth)}.wf.metal{background:var(--metal)}.wf.water{background:var(--water)}
-.dy-track{display:flex;gap:4px;flex-wrap:wrap}
-.dy-block{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 8px;text-align:center;min-width:60px;flex:1}
-.dy-block.cur{border-color:rgba(200,169,110,.45);background:rgba(200,169,110,.04)}
-.dy-block .dy-gz{font-size:14px;color:var(--gold);font-weight:600}
-.dy-block .dy-age{font-size:9px;color:var(--dim);margin-top:2px}
-.dy-block .dy-tag{font-size:8px;color:var(--gold);background:rgba(200,169,110,.12);padding:1px 6px;border-radius:6px}
-.an-card{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:16px}
-.an-card .an-title{font-size:16px;color:var(--gold);margin-bottom:22px;letter-spacing:2px;font-weight:600;text-align:center;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.an-p{font-size:14px;line-height:2;color:var(--text)}.an-p em{color:var(--gold3);font-style:normal;font-weight:500}
-.an-summary{background:var(--bg);border:1px solid var(--border2);border-radius:12px;padding:16px;margin-top:24px;text-align:center;font-size:11px;color:var(--dim)}
-@media(max-width:480px){.hd h1{font-size:22px}.bz-table .gz{font-size:18px}.an-card{padding:20px 16px}.btn-pai{width:100%}}
+
+/* 排盘卡片 */
+.section-title{font-size:1.1em;color:var(--gold-lt);border-left:3px solid var(--gold);padding-left:12px;margin:28px 0 16px;letter-spacing:1px}
+.bazi-card{background:linear-gradient(135deg,#14191f,#1a2027);border:1px solid var(--card-border);border-radius:14px;padding:18px 14px;margin-bottom:16px}
+.bazi-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.bazi-header .title{color:var(--gold);font-size:.82em;letter-spacing:2px}
+.bazi-header .sex{color:var(--red);font-size:.75em;background:rgba(255,59,48,.12);padding:2px 10px;border-radius:20px}
+.bazi-table{width:100%;border-collapse:collapse;text-align:center;table-layout:fixed}
+.bazi-table th{color:var(--dim);font-size:.7em;font-weight:500;padding:4px 0 10px;letter-spacing:3px}
+.bazi-table td{padding:0;vertical-align:middle}
+.stem{font-size:1.7em;font-weight:700;line-height:1.2;letter-spacing:2px;display:block;padding:6px 0 2px}
+.branch{font-size:1.5em;font-weight:700;line-height:1.2;display:block;padding:2px 0}
+.ten-label{font-size:.6em;color:var(--dim);margin-top:1px;display:block}
+.shishen-tag{display:inline-block;font-size:.7em;padding:1px 10px;border-radius:20px;font-weight:500;margin:2px 0 4px}
+.bazi-divider{height:1px;background:linear-gradient(90deg,transparent,var(--card-border),transparent);margin:4px 0}
+.canggan-group{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding:4px 0}
+.canggan-item{font-size:.65em;color:var(--gold-dim);display:flex;align-items:center;gap:3px}
+.cg-dot{width:5px;height:5px;border-radius:50%;display:inline-block;flex-shrink:0}
+.nayin-tag{font-size:.65em;color:var(--dim);padding:2px 0;display:block}
+.kongwang{font-size:.6em;color:rgba(106,122,136,.5);display:block;padding:1px 0}
+.bazi-footer{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(42,48,56,.3)}
+.bf-tag{font-size:.65em;padding:2px 10px;border-radius:20px;background:rgba(42,48,56,.5);border:1px solid var(--card-border);color:var(--gold-dim)}
+
+/* 五行色 */
+.s-wood{color:var(--green)}.s-fire{color:var(--red)}.s-earth{color:var(--orange)}.s-metal{color:var(--gray)}.s-water{color:var(--blue)}
+.ss-wood{background:rgba(52,199,89,.12);color:var(--green);border:1px solid rgba(52,199,89,.2)}
+.ss-fire{background:rgba(255,59,48,.12);color:var(--red);border:1px solid rgba(255,59,48,.2)}
+.ss-earth{background:rgba(255,159,10,.12);color:var(--orange);border:1px solid rgba(255,159,10,.2)}
+.ss-metal{background:rgba(174,174,178,.12);color:var(--gray);border:1px solid rgba(174,174,178,.2)}
+.ss-water{background:rgba(90,200,250,.12);color:var(--blue);border:1px solid rgba(90,200,250,.2)}
+.ss-master{background:rgba(200,169,110,.12);color:var(--gold);border:1px solid rgba(200,169,110,.2)}
+.dot-wood{background:var(--green)}.dot-fire{background:var(--red)}.dot-earth{background:var(--orange)}.dot-metal{background:var(--gray)}.dot-water{background:var(--blue)}
+
+/* 五行条 */
+.wx-fullbar{display:flex;height:22px;border-radius:11px;overflow:hidden;background:#1a2027;margin-bottom:12px}
+.wx-fb-item{display:flex;align-items:center;justify-content:center;font-size:.55em;color:#fff;font-weight:600;transition:width .5s ease}
+.wx-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.wx-gi{background:rgba(42,48,56,.4);border-radius:10px;padding:10px;text-align:center}
+.wx-gi .wx-gn{font-size:.7em;margin-bottom:2px}
+.wx-gi .wx-gc{font-size:.85em;color:var(--gold-lt);font-weight:600}
+.wx-gi .wx-gd{font-size:.6em;color:var(--dim);margin-top:2px}
+.wx-summary{padding:10px;background:rgba(200,169,110,.06);border-radius:8px;font-size:.8em;text-align:center;margin-top:8px}
+
+/* 大运 */
+.dy-track{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:4px 0}
+.dy-block{display:flex;flex-direction:column;align-items:center;min-width:52px;padding:8px 6px;border-radius:10px;background:#1a2027;border:1px solid var(--card-border)}
+.dy-block.cur{border-color:var(--gold);background:linear-gradient(180deg,rgba(200,169,110,.08),transparent)}
+.dy-block.cur::after{content:'当前';position:absolute;top:-7px;right:-5px;font-size:.5em;color:var(--gold);background:var(--bg);padding:0 4px;border-radius:4px;border:1px solid var(--gold)}
+.dy-block .dy-gz{font-size:1.05em;font-weight:700;color:var(--gold-lt)}
+.dy-block .dy-age{font-size:.58em;color:var(--dim);margin-top:2px}
+
+/* 分析卡片 */
+.card{background:linear-gradient(135deg,#14191f,#1a2027);border:1px solid var(--card-border);border-radius:16px;padding:20px;margin-bottom:16px;min-height:60px}
+.card p{margin-bottom:10px;font-size:.9em}
+.card ul{list-style:none;padding:0;margin:8px 0}
+.card ul li{padding:5px 0 5px 18px;position:relative;font-size:.85em;color:#b8ad8a;border-bottom:1px solid rgba(42,48,56,.5)}
+.card ul li:last-child{border-bottom:none}
+.card ul li::before{content:'▸';position:absolute;left:0;color:var(--gold)}
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.7em;margin:2px 3px;font-weight:500}
+.tag-fire{background:rgba(255,59,48,.15);color:#e57373;border:1px solid rgba(255,59,48,.3)}
+.tag-water{background:rgba(90,200,250,.15);color:#64b5f6;border:1px solid rgba(90,200,250,.3)}
+.tag-wood{background:rgba(52,199,89,.15);color:#81c784;border:1px solid rgba(52,199,89,.3)}
+.tag-earth{background:rgba(255,159,10,.15);color:#ffd54f;border:1px solid rgba(255,159,10,.3)}
+.tag-metal{background:rgba(174,174,178,.12);color:#b0bec5;border:1px solid rgba(174,174,178,.2)}
+.highlight{color:#e88060;font-weight:700}
+.highlight-gold{color:var(--gold-lt);font-weight:700}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--card-border),transparent);margin:26px 0;border:none}
+.footer{text-align:center;padding:30px 0 20px;color:#6a5e42;font-size:.75em;letter-spacing:2px}
+@media(max-width:480px){.bazi-table .stem{font-size:1.4em}.bazi-table .branch{font-size:1.2em}.wx-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div class="container">
-<div class="hd"><h1>八字 · 在线排盘</h1><p class="sub">真太阳时 · 子平格局 · AI 命理分析</p></div>
+<h1>八字 · 在线排盘<small>真太阳时 · 子平格局 · AI 命理分析</small></h1>
+
 <div class="icard">
 <div class="sel-row"><span class="sec-label">出生地</span>
 <div class="sg"><label>省</label><select id="sp" onchange="onProv()"><option>加载中…</option></select></div>
+
 <div class="sg"><label>市</label><select id="sc" onchange="onCity()"><option>请先选省</option></select></div>
 <div class="sg"><label>区/县</label><select id="sx"><option>请先选市</option></select></div>
 </div>
@@ -75,56 +121,49 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 <div class="sg"><label>时</label><select id="sh"></select></div>
 <div class="sg"><label>分</label><select id="smi"></select></div>
 </div>
-<div class="sel-row">
+<div class="sel-row" style="margin-bottom:0">
 <div class="gender-row"><button class="gr-btn on" id="bs" onclick="setCal(0)">阳历</button><button class="gr-btn" id="bl" onclick="setCal(1)">农历</button></div>
 <div class="gender-row"><button class="gr-btn on" id="bm" onclick="setGender(1)">男</button><button class="gr-btn" id="bf" onclick="setGender(0)">女</button></div>
 </div>
 <button class="btn btn-pai" onclick="go()">开始分析</button>
-<div style="text-align:center;font-size:10px;color:var(--dim2);margin-top:8px">基于真太阳时排盘</div>
+<div style="text-align:center;font-size:10px;color:var(--dim);margin-top:8px">基于真太阳时排盘</div>
 </div>
 <div class="ld" id="ld"><div class="spin"></div><div style="color:var(--dim);font-size:13px">八字排盘中…</div></div>
 <div id="result"></div>
-<script>
-let _curLng=116.4,_gender=1,_isLunar=0,_regions=null;
-const WD=['日','一','二','三','四','五','六'];
+<div class="footer">晴子 · 子平命理 | 仅供参考</div>
+</div><script>
+var _curLng=116.4,_gender=1,_isLunar=0,_regions=null;
 function X(id){return document.getElementById(id);}
 function setGender(g){_gender=g;X('bm').classList.toggle('on',g===1);X('bf').classList.toggle('on',g===0);}
 function setCal(v){_isLunar=v;X('bs').classList.toggle('on',v===0);X('bl').classList.toggle('on',v===1);}
 
-// ===== 加载地区数据 =====
 function loadRegions(){
-  fetch('/regions.json').then(function(r){return r.json()}).then(function(data){
-    _regions=data;renderProv();
-  }).catch(function(e){
-    console.warn('regions load failed',e);renderProv();
-  });
+  fetch('/regions.json').then(function(r){return r.json()}).then(function(d){_regions=d;rProv();}).catch(function(e){rProv();});
 }
-function renderProv(){
+function rProv(){
   var o='<option>请选择</option>';
-  if(_regions){var keys=Object.keys(_regions);for(var i=0;i<keys.length;i++)o+='<option>'+keys[i]+'</option>';}
+  if(_regions){var ks=Object.keys(_regions);for(var i=0;i<ks.length;i++)o+='<option>'+ks[i]+'</option>';}
   X('sp').innerHTML=o;if(_regions&&_regions['广东']){X('sp').value='广东';onProv();}
 }
 function onProv(){
-  var name=X('sp').value;
-  X('sc').innerHTML='<option>请选择</option>';X('sx').innerHTML='<option>请先选市</option>';
-  if(!_regions||!name||!_regions[name])return;
-  var cities=_regions[name],o='<option>请选择</option>';
-  for(var i=0;i<cities.length;i++)o+='<option value="'+cities[i].lng+'|'+cities[i].n+'">'+cities[i].n+'</option>';
+  var n=X('sp').value;X('sc').innerHTML='<option>请选择</option>';X('sx').innerHTML='<option>请先选市</option>';
+  if(!_regions||!n||!_regions[n])return;
+  var cs=_regions[n],o='<option>请选择</option>';
+  for(var i=0;i<cs.length;i++)o+='<option value="'+cs[i].lng+'|'+cs[i].n+'">'+cs[i].n+'</option>';
   X('sc').innerHTML=o;
 }
 function onCity(){
-  var val=X('sc').value;X('sx').innerHTML='<option>请选择</option>';
-  if(!val||val==='请选择')return;
-  var parts=val.split('|');_curLng=parseFloat(parts[0])||116.4;
-  var pname=X('sp').value;if(!_regions||!_regions[pname])return;
-  var cities=_regions[pname],city=null;
-  for(var i=0;i<cities.length;i++){if(cities[i].n===parts[1]){city=cities[i];break;}}
-  if(!city)return;
-  var o='';for(var i=0;i<city.d.length;i++)o+='<option>'+city.d[i]+'</option>';
-  X('sx').innerHTML=o||'<option>'+parts[1]+'市区</option>';
+  var v=X('sc').value;X('sx').innerHTML='<option>请选择</option>';
+  if(!v||v==='请选择')return;
+  var p=v.split('|');_curLng=parseFloat(p[0])||116.4;
+  var pn=X('sp').value;if(!_regions||!_regions[pn])return;
+  var cs=_regions[pn],ct=null;
+  for(var i=0;i<cs.length;i++){if(cs[i].n===p[1]){ct=cs[i];break;}}
+  if(!ct)return;
+  var o='';for(var i=0;i<ct.d.length;i++)o+='<option>'+ct.d[i]+'</option>';
+  X('sx').innerHTML=o||'<option>'+p[1]+'市区</option>';
 }
 
-// ===== 时间选择器 =====
 function initSelects(){
   var n=new Date(),cy=n.getFullYear(),o='';
   for(var i=cy-80;i<=cy;i++)o+='<option value="'+i+'"'+(i===cy-30?' selected':'')+'>'+i+'</option>';
@@ -138,62 +177,85 @@ function initSelects(){
   for(var i=0;i<=59;i++)o+='<option value="'+i+'">'+(i<10?'0':'')+i+'</option>';
   X('smi').innerHTML=o;
 }
+var GAN_WX={甲:'木',乙:'木',丙:'火',丁:'火',戊:'土',己:'土',庚:'金',辛:'金',壬:'水',癸:'水'};
+var WX_CLS={木:'wood',火:'fire',土:'earth',金:'metal',水:'water'};
+var ZHI_WX={寅:'木',卯:'木',巳:'火',午:'火',申:'金',酉:'金',亥:'水',子:'水',辰:'土',戌:'土',丑:'土',未:'土'};
+function gCls(g){return 's-'+WX_CLS[GAN_WX[g]||''];}
+function zCls(z){return 's-'+WX_CLS[ZHI_WX[z]||''];}
+function ssCls(g){return 'ss-'+WX_CLS[GAN_WX[g]||''];}
+function dotCls(g){return WX_CLS[GAN_WX[g]||''];}
+var wxClr={木:'green',火:'red',土:'orange',金:'gray',水:'blue'};
 
-// ===== 发起分析 =====
 function go(){
   var y=+X('sy').value,m=+X('sm').value,d=+X('sd').value,h=+X('sh').value,mi=+X('smi').value;
   if(!y||!m||!d)return;
   X('ld').classList.add('on');X('result').classList.remove('on');window.scrollTo(0,0);
+  var q=JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar});
+  var hd={'Content-Type':'application/json'};
   Promise.all([
-    fetch('/api/bazi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar})}).then(function(r){return r.json()}),
-    fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar})}).then(function(r){return r.json()}).catch(function(){return {fallback:true}})
-  ]).then(function(results){
-    var r=results[0],ai=results[1];
+    fetch('/api/bazi',{method:'POST',headers:hd,body:q}).then(function(r){return r.json()}),
+    fetch('/api/analyze',{method:'POST',headers:hd,body:q}).then(function(r){return r.json()}).catch(function(){return {fallback:true}})
+  ]).then(function(rs){
+    var r=rs[0],ai=rs[1];
     if(r.error){alert(r.error);X('ld').classList.remove('on');return}
     render(r,ai);X('ld').classList.remove('on');
   }).catch(function(e){alert('请求失败: '+e.message);X('ld').classList.remove('on')});
 }
 
-// ===== 渲染结果 =====
 function render(r,ai){
-  var city=X('sc').value.split('|')[1]||'',county=X('sx').value||'',h='';
-  h+='<div class="bazi-card"><div class="sect">基本信息</div><div class="info-row">';
-  h+='<span class="info-tag">'+r.gender+'命 · <b>'+r.bazi+'</b> · 日主<b> '+r.riGan+'</b></span>';
-  h+='<span class="info-tag">北京 <b>'+r.beijingTime+'</b></span>';
-  h+='<span class="info-tag">真太阳时 <b>'+r.trueSolar+'</b> ('+(r.solarOffset>0?'+':'')+r.solarOffset+'分)</span>';
-  h+='<span class="info-tag">出生地 <b>'+X('sp').value+' '+city+' '+county+'</b></span>';
-  h+='</div></div>';
+  var bz=r.bazi.split(' '),ct=X('sc').value.split('|')[1]||'',cn=X('sx').value||'',h='';
+  h+='<p class="subtitle">'+r.bazi+' · '+r.gender+'命 · '+bz[2][0]+'日主<br>'+r.beijingTime+' · '+r.trueSolar+' 真太阳时 ('+(r.solarOffset>0?'+':'')+r.solarOffset+'分)<br>'+X('sp').value+' '+ct+' '+cn+'</p>';
+  h+='<div class="section-title">一、排盘</div>';
+  h+='<div class="bazi-card"><div class="bazi-header"><span class="title">四柱八字</span><span class="sex">'+r.gender+'</span></div>';
+  h+='<table class="bazi-table"><thead><tr>';
+  for(var i=0;i<r.pillars.length;i++)h+='<th>'+r.pillars[i].name+'</th>';
+  h+='</tr></thead><tbody>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++){var p=r.pillars[i];h+='<td><span class="stem '+gCls(p.gan)+'">'+p.gan+'</span></td>';}h+='</tr>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++){var p=r.pillars[i];h+='<td><span class="branch '+zCls(p.zhi)+'">'+p.zhi+'</span><span class="ten-label">'+p.shiShenZhi.split('/')[0]+'</span></td>';}h+='</tr>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++){var p=r.pillars[i],ss=p.shiShen==='日主'?'ss-master':ssCls(p.gan);h+='<td><span class="shishen-tag '+ss+'">'+p.shiShen+'</span></td>';}h+='</tr>';
+  h+='</tbody></table><div class="bazi-divider"></div><table class="bazi-table"><tbody>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++){var p=r.pillars[i];h+='<td><div class="canggan-group">';if(p.cangGan){for(var j=0;j<p.cangGan.length;j++){h+='<span class="canggan-item"><span class="cg-dot dot-'+dotCls(p.cangGan[j])+'"></span>'+p.cangGan[j]+'</span>';}}h+='</div></td>';}h+='</tr>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++)h+='<td><span class="nayin-tag">'+r.pillars[i].naYin+'</span></td>';h+='</tr>';
+  h+='<tr>';for(var i=0;i<r.pillars.length;i++)h+='<td><span class="kongwang">-</span></td>';h+='</tr>';
+  h+='</tbody></table>';
+  h+='<div class="bazi-footer"><span class="bf-tag">日主 '+bz[2][0]+'</span><span class="bf-tag">纳音 '+r.pillars[2].naYin+'</span><span class="bf-tag">'+r.gender+'命</span></div></div>';
 
-  h+='<div class="bazi-card"><div class="sect">四柱八字</div>';
-  h+='<table class="bz-table"><thead><tr>'+r.pillars.map(function(p){return '<th>'+p.name+'</th>'}).join('')+'</tr></thead><tbody>';
-  h+='<tr>'+r.pillars.map(function(p){return '<td class="rc"><div class="gz">'+p.gan+'</div><div style="font-size:11px;color:var(--dim)">'+p.shiShen+'</div></td>'}).join('')+'</tr>';
-  h+='<tr>'+r.pillars.map(function(p){return '<td class="rc"><div class="gz">'+p.zhi+'</div><div class="ssz">'+p.shiShenZhi+'</div></td>'}).join('')+'</tr>';
-  h+='<tr>'+r.pillars.map(function(p){return '<td><div class="cg">'+(p.cangGan||[]).join(' ')+'</div></td>'}).join('')+'</tr>';
-  h+='<tr>'+r.pillars.map(function(p){return '<td><div class="ny">'+p.naYin+'</div></td>'}).join('')+'</tr>';
-  h+='</tbody></table></div>';
-
-  var wxN=['木','火','土','金','水'],wxC=['wood','fire','earth','metal','water'],wxV=Object.values(r.wuxingCount);
-  var total=Math.max(1,wxV.reduce(function(a,b){return a+b},0));
-  h+='<div class="bazi-card"><div class="sect">五行分布</div><div class="wx-bar">';
-  for(var i=0;i<5;i++){var cnt=r.wuxingCount[wxN[i]]||0;h+='<div class="wx-item"><div class="wn">'+wxN[i]+' '+cnt+'</div><div class="wb"><div class="wf '+wxC[i]+'" style="width:'+Math.round(cnt/total*100)+'%"></div></div></div>';}
+  var wxK=['木','火','土','金','水'],wxC=r.wuxingCount,wxT=0;
+  for(var i=0;i<wxK.length;i++)wxT+=wxC[wxK[i]]||0;if(wxT===0)wxT=1;
+  h+='<div class="section-title">二、五行力量分析</div>';
+  h+='<div class="bazi-card">';
+  h+='<div style="display:flex;height:22px;border-radius:11px;overflow:hidden;background:#1a2027;margin-bottom:14px">';
+  for(var i=0;i<wxK.length;i++){var cnt=wxC[wxK[i]]||0;if(cnt>0)h+='<div style="width:'+Math.round(cnt/wxT*100)+'%;background:var(--'+wxClr[wxK[i]]+');display:flex;align-items:center;justify-content:center;font-size:.55em;color:#fff;font-weight:600">'+wxK[i]+cnt+'</div>';}
+  h+='</div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
+  for(var i=0;i<wxK.length;i++)h+='<div style="background:rgba(42,48,56,.4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:.7em;color:var(--'+wxClr[wxK[i]]+');margin-bottom:2px">'+wxK[i]+'</div><div style="font-size:.85em;color:var(--gold-lt);font-weight:600">'+(wxC[wxK[i]]||0)+'</div></div>';
+  h+='<div style="background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:.7em;color:var(--gold);margin-bottom:2px">日主</div><div style="font-size:.85em;color:var(--gold-lt);font-weight:600">'+bz[2][0]+'</div></div>';
   h+='</div></div>';
 
   if(r.dayun.length&&!r.dayun[0].info){
-    h+='<div class="bazi-card"><div class="sect">大运流程</div><div class="dy-track">';
-    for(var i=0;i<r.dayun.length;i++){var dy=r.dayun[i];h+='<div class="dy-block'+(dy.cur?' cur':'')+'"><div class="dy-gz">'+dy.ganZhi+'</div><div class="dy-age">'+(dy.ages||dy.startAge)+'岁</div>'+(dy.cur?'<div class="dy-tag">当前</div>':'')+'</div>';}
+    h+='<div class="section-title">三、大运流程</div><div class="bazi-card"><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px">';
+    for(var i=0;i<r.dayun.length;i++){var dy=r.dayun[i];
+      h+='<div style="position:relative;display:flex;flex-direction:column;align-items:center;min-width:52px;padding:8px 6px;border-radius:10px;background:#1a2027;border:1px solid '+(dy.cur?'var(--gold)':'#2a3038')+';'+(dy.cur?'background:linear-gradient(180deg,rgba(200,169,110,.08),transparent);':'')+'">';
+      if(dy.cur)h+='<span style="position:absolute;top:-7px;right:-5px;font-size:.5em;color:var(--gold);background:#0b0e12;padding:0 4px;border-radius:4px;border:1px solid var(--gold)">当前</span>';
+      h+='<span style="font-size:1.05em;font-weight:700;color:var(--gold-lt)">'+dy.ganZhi+'</span><span style="font-size:.58em;color:#6a7a88;margin-top:2px">'+(dy.ages||dy.startAge)+'岁</span></div>';
+    }
     h+='</div></div>';
   }
 
   var useAI=ai&&!ai.fallback&&ai.content;
-  h+='<div class="an-card"><div class="an-title">命理分析报告</div>';
+  h+='<div class="section-title">四、命理分析</div>';
   if(useAI){
-    var aiTxt=ai.content.replace(/\*\*(.+?)\*\*/g,'<em>$1</em>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-    h+='<div class="an-p">'+aiTxt+'</div><div class="an-summary">DeepSeek AI · 仅供参考</div>';
-  }else{h+='<div class="an-p" style="color:var(--dim)">分析服务暂不可用（'+(ai?ai.reason:'未知')+'），请稍后重试。</div>';}
-  h+='</div>';
+    var at=ai.content;
+    at=at.replace(/###\s*(.+)/g,'<p style="color:var(--gold-lt);font-weight:600;margin:16px 0 6px;font-size:.95em">$1</p>');
+    at=at.replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--gold-lt)">$1</strong>');
+    at=at.replace(/[-•]\s+(.+)/g,'<li>$1</li>');
+    h+='<div class="card">'+at.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>')+'</div>';
+  }else{
+    h+='<div class="card"><p style="color:var(--dim)">分析服务暂不可用（'+(ai?ai.reason:'未知')+'），请稍后重试。</p></div>';
+  }
+  h+='<hr class="divider">';
   X('result').innerHTML=h;X('result').classList.add('on');X('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
-
 initSelects();loadRegions();
 </script>
 </body>
