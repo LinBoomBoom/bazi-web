@@ -31,6 +31,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
 .btn-ghost{background:transparent;border:1px solid var(--gold2);color:var(--gold);padding:8px 16px;font-size:12px;cursor:pointer;letter-spacing:1px;border-radius:20px;height:36px;transition:all .25s ease}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold3);background:rgba(200,169,110,.08)}
 .btn-ghost.on{background:rgba(200,169,110,.15);border-color:var(--gold);color:var(--gold3)}
+.gender-row{display:inline-flex;background:var(--bg);border:1px solid var(--border2);border-radius:10px;overflow:hidden}
+.gender-row .gr-btn{background:transparent;border:none;color:var(--dim);padding:8px 20px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:all .2s;font-family:var(--font)}
+.gender-row .gr-btn.on{background:rgba(200,169,110,.15);color:var(--gold)}
 
 /* 结果 */
 .bazi-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
@@ -83,15 +86,23 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:1
     <div class="sg"><label>市/区</label><select id="sc" onchange="onCity()" style="min-width:110px"><option>请先选省</option></select></div>
     <div class="sg"><label>县/区</label><select id="sx" style="min-width:110px"><option>请先选市</option></select></div>
   </div>
-  <div class="icl" style="margin-top:18px">▼ 出 生 时 间</div>
+  <div class="icl">▼ 出 生 时 间</div>
+  <div class="sel-row" style="margin-bottom:10px">
+    <div class="gender-row">
+      <button class="gr-btn on" id="bs" onclick="setCal(0)">阳历</button>
+      <button class="gr-btn" id="bl" onclick="setCal(1)">农历</button>
+    </div>
+    <div class="gender-row">
+      <button class="gr-btn on" id="bm" onclick="setGender(1)">男</button>
+      <button class="gr-btn" id="bf" onclick="setGender(0)">女</button>
+    </div>
+  </div>
   <div class="sel-row">
     <div class="sg"><label>年</label><select id="sy"></select></div>
     <div class="sg"><label>月</label><select id="sm"></select></div>
     <div class="sg"><label>日</label><select id="sd"></select></div>
     <div class="sg"><label>时</label><select id="sh"></select></div>
     <div class="sg"><label>分</label><select id="smi"></select></div>
-    <button class="btn-ghost on" id="bm" onclick="setGender(1)" style="height:40px">男</button>
-    <button class="btn-ghost" id="bf" onclick="setGender(0)" style="height:40px">女</button>
   </div>
   <button class="btn btn-pai" onclick="go()">🔮 开 始 排 盘</button>
 </div>
@@ -178,10 +189,11 @@ function onCity(){
   X('sx').innerHTML=o;
 }
 // ===== 公用的辅助 =====
-let _gender=1;
+let _gender=1,_isLunar=0;
 const WD=['日','一','二','三','四','五','六'];
 function X(id){return document.getElementById(id);}
 function setGender(g){_gender=g;X('bm').classList.toggle('on',g===1);X('bf').classList.toggle('on',g===0);}
+function setCal(v){_isLunar=v;X('bs').classList.toggle('on',v===0);X('bl').classList.toggle('on',v===1);}
 
 function initSelects(){
   const n=new Date(),cy=n.getFullYear();
@@ -203,8 +215,8 @@ async function go(){
   X('ld').classList.add('on');X('result').classList.remove('on');window.scrollTo({top:0,behavior:'smooth'});
   try{
     const [resp,aiResp]=await Promise.all([
-      fetch('/api/bazi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender})}),
-      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender})})
+      fetch('/api/bazi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar})}),
+      fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({year:y,month:m,day:d,hour:h,minute:mi,longitude:_curLng,gender:_gender,isLunar:_isLunar})})
     ]);
     const r=await resp.json();if(r.error){alert(r.error);return}
     const ai=await aiResp.json().catch(()=>({fallback:true}));

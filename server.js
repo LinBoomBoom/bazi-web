@@ -60,11 +60,21 @@ function getWuxing(ganZhi) {
 // ========== API: 排八字 ==========
 app.post('/api/bazi', (req, res) => {
   try {
-    const { year, month, day, hour, minute, longitude } = req.body;
+    const { year, month, day, hour, minute, longitude, gender, isLunar } = req.body;
     const lng = longitude || 120;
 
+    // 农历→阳历转换
+    let sy = year, sm = month, sd = day;
+    if (isLunar) {
+      try {
+        const lunarDate = Lunar.fromYmd(year, month, day);
+        const solarDate = lunarDate.getSolar();
+        sy = solarDate.getYear(); sm = solarDate.getMonth(); sd = solarDate.getDay();
+      } catch(e) { /* keep as solar */ }
+    }
+
     // 真太阳时修正
-    const ts = calcTrueSolar(year, month, day, hour || 0, minute || 0, lng);
+    const ts = calcTrueSolar(sy, sm, sd, hour || 0, minute || 0, lng);
 
     // 用修正后时间排盘
     const solar = Solar.fromYmdHms(ts.year, ts.month, ts.day, ts.hour, ts.minute, 0);
@@ -91,7 +101,7 @@ app.post('/api/bazi', (req, res) => {
     ];
 
     // 大运
-    const gender = req.body.gender || 1;
+    const g = gender || 1;
     let dayunArr = [];
     try {
       const yun = bz.getYun(gender);
@@ -144,9 +154,14 @@ app.post('/api/bazi', (req, res) => {
 // ========== API: AI 命理分析 ==========
 app.post('/api/analyze', async (req, res) => {
   try {
-    const { year, month, day, hour, minute, longitude, gender, question } = req.body;
+    const { year, month, day, hour, minute, longitude, gender, isLunar, question } = req.body;
     const lng = longitude || 120;
-    const ts = calcTrueSolar(year, month, day, hour || 0, minute || 0, lng);
+    // 农历转换
+    let sy = year, sm = month, sd = day;
+    if (isLunar) {
+      try { const ld = Lunar.fromYmd(year, month, day); const sd2 = ld.getSolar(); sy = sd2.getYear(); sm = sd2.getMonth(); sd = sd2.getDay(); } catch(e) {}
+    }
+    const ts = calcTrueSolar(sy, sm, sd, hour || 0, minute || 0, lng);
     const solar = Solar.fromYmdHms(ts.year, ts.month, ts.day, ts.hour, ts.minute, 0);
     const lunar = Lunar.fromSolar(solar);
     const bz = lunar.getEightChar();
